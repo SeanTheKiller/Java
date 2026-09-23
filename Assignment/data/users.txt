@@ -1,0 +1,5 @@
+username,password,role,phoneNumber
+lim,pw123,Counter,0123456789
+jeff,hehe,Manager,0129003489
+sean,haha,Technician,0123456789
+mike,mm,Customer,0123331234

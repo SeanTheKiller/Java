@@ -15,8 +15,8 @@ public class User {
     String phoneNumber;
 
     public User(String username, String password, String role, String phonenumber) {
-        if (username.contains(",")||password.contains(",")||phonenumber.contains(",")||role.contains(",")){
-            throw new IllegalArgumentException("Input contain ','");
+        if (username.contains("|")||password.contains("|")||phonenumber.contains("|")||role.contains("|")){
+            throw new IllegalArgumentException("Input contain '|'");
         }
         this.username = username;
         this.password = password;
@@ -26,8 +26,8 @@ public class User {
     }
 
     public User(String username, String password, String role) {
-        if (username.contains(",")||password.contains(",")){
-            throw new IllegalArgumentException("Input contain ','");
+        if (username.contains("|")||password.contains("|")){
+            throw new IllegalArgumentException("Input contain '|'");
         }
         this.username = username;
         this.password = password;
@@ -40,8 +40,8 @@ public class User {
     }
 
     public void setUsername(String username) {
-        if (username.contains(",")){
-            throw new IllegalArgumentException("Username contain ','");
+        if (username.contains("|")){
+            throw new IllegalArgumentException("Username contain '|'");
         }
         this.username = username;
     }
@@ -51,8 +51,8 @@ public class User {
     }
 
     public void setPassword(String password) {
-        if (password.contains(",")){
-            throw new IllegalArgumentException("Password contain ','");
+        if (password.contains("|")){
+            throw new IllegalArgumentException("Password contain '|'");
         }
         this.password = password;
     }
@@ -62,8 +62,8 @@ public class User {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        if (phoneNumber.contains(",")){
-            throw new IllegalArgumentException("Phone Number contain ','");
+        if (phoneNumber.contains("|")){
+            throw new IllegalArgumentException("Phone Number contain '|'");
         }
         this.phoneNumber = phoneNumber;
     }
@@ -73,8 +73,8 @@ public class User {
     }
 
     public void setRole(String role) {
-        if (role.contains(",")){
-            throw new IllegalArgumentException("Role contain ','");
+        if (role.contains("|")){
+            throw new IllegalArgumentException("Role contain '|'");
         }
         this.role = role;
     }

@@ -12,6 +12,7 @@ import common.User;
 
 public class FileUtil {
     public static ArrayList<User> allUsers = new ArrayList<User>();
+    public static User currentUser;
     
     private static final String DATA_DIR = "data";
     // read file from path
@@ -31,17 +32,39 @@ public class FileUtil {
         }
         return lines;
     }
+    
+    public static void write(String fileName, List<String> lines){
+        String projectRoot = System.getProperty("user.dir");
+        Path path = Paths.get(projectRoot, DATA_DIR, fileName);
+        try {
+            Files.createDirectories(path.getParent());
+            Files.write(path, lines);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    // read users.txt and load it into allUsers
     public static void loadAllUsers() {
         allUsers.clear();
         List<String> lines = read("users.txt");
         for (int i = 1; i < lines.size(); i++) {
             String line = lines.get(i);
-            String[] parts = line.split(",");
-            if (parts.length >= 3) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 4) {
                 new User(parts[0], parts[1], parts[2], parts[3]);
             }
         }
+    }
+    
+    public static void saveAllUsers() {
+        List<String> lines = new ArrayList();
+        lines.add("username|password|role|phoneNumber");
+        for (User u: allUsers){
+            String line = u.username+"|"+u.password+"|"+u.role+"|"+u.phoneNumber;
+            lines.add(line);
+        }
+        write("users.txt", lines);
     }
     
     public static void printAllUsers() {
@@ -54,6 +77,7 @@ public class FileUtil {
         // testing purposes
         loadAllUsers();
         printAllUsers();
+        saveAllUsers();
     }
     
 }

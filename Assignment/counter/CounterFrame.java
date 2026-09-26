@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package counter;
-
+import common.FileUtil;
+import common.User;
 /**
  *
  * @author johnc
@@ -102,6 +103,13 @@ public class CounterFrame extends javax.swing.JFrame {
 
     private void editProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editProfileButtonActionPerformed
         // TODO add your handling code here:
+        // hardcoded mock user, not real, need to pass in currentUser after login system created
+        FileUtil.loadAllUsers();
+        User cs = FileUtil.findUserByUsername("lim");
+        
+        EditProfileDialog d = new EditProfileDialog(this, cs);
+        d.setLocationRelativeTo(this);
+        d.setVisible(true);
     }//GEN-LAST:event_editProfileButtonActionPerformed
 
     private void manageAppointmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageAppointmentButtonActionPerformed

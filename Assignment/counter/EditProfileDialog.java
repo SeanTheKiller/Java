@@ -8,6 +8,7 @@ package counter;
  *
  * @author johnc
  */
+import common.FileUtil;
 import common.User;
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,6 @@ public class EditProfileDialog extends JDialog {
     private JTextField nameField;
     private JTextField phoneField;
     private JPasswordField passField;
-    private boolean saved = false;
     private User user;
 
     public EditProfileDialog(Frame owner, User user) {
@@ -52,15 +52,31 @@ public class EditProfileDialog extends JDialog {
 
     private void onSave() {
         try {
-            user.setUsername(nameField.getText().trim());
+            String phoneNo = phoneField.getText().trim();
+            String username = nameField.getText().trim();
+
+            // check phone nomber
+            if (phoneNo.length() != 10 || !phoneNo.matches("\\d+")){
+                throw new IllegalArgumentException("provide phone number in the format of '0123016789'");
+            }
+            // check username
+            User foundUser = FileUtil.findUserByUsername(username);
+            if (foundUser != null && foundUser != user){
+                throw new IllegalArgumentException("username already taken, try another one");
+            }
+            
+            user.setUsername(username);
             user.setPassword(new String(passField.getPassword()));
-            user.setPhoneNumber(phoneField.getText().trim());
-            saved = true;
+            user.setPhoneNumber(phoneNo);
+            
+            // save user
+            FileUtil.printAllUsers();
+            FileUtil.saveAllUsers();
+            // if edited user is logged-in user, currentUser points to same object, auto synced
             dispose();
         } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Invalid input ", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public boolean isSaved() { return saved; }
 }

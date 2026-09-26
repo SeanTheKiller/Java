@@ -67,6 +67,16 @@ public class FileUtil {
         write("users.txt", lines);
     }
     
+    // fetch User class by username, return null if cant
+    public static User findUserByUsername(String targetUsername){
+        for (User u: allUsers){
+            if (u.username.equals(targetUsername)){
+                return u;
+            }
+        }
+        return null;
+    }
+    
     public static void printAllUsers() {
         for (User u : allUsers){
             System.out.println("User info are: "+u.username+" "+u.password+" "+u.role+" "+u.phoneNumber);
@@ -78,6 +88,12 @@ public class FileUtil {
         loadAllUsers();
         printAllUsers();
         saveAllUsers();
+        User a = findUserByUsername("lim ");
+        if (a != null){
+            System.out.println("Found user: "+a.username + " "+a.role);
+        } else {
+            System.out.println("cannot find user");
+        }
     }
     
 }

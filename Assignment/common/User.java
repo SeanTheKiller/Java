@@ -18,6 +18,9 @@ public class User {
         if (username.contains("|")||password.contains("|")||phonenumber.contains("|")||role.contains("|")){
             throw new IllegalArgumentException("Input contain '|'");
         }
+        if (username.equals("")||password.equals("")||phonenumber.equals("")||role.equals("")){
+            throw new IllegalArgumentException("Input is empty");
+        }
         this.username = username;
         this.password = password;
         this.role = role;
@@ -28,6 +31,9 @@ public class User {
     public User(String username, String password, String role) {
         if (username.contains("|")||password.contains("|")){
             throw new IllegalArgumentException("Input contain '|'");
+        }
+        if (username.equals("")||password.equals("")||role.equals("")){
+            throw new IllegalArgumentException("Input is empty");
         }
         this.username = username;
         this.password = password;
@@ -43,6 +49,9 @@ public class User {
         if (username.contains("|")){
             throw new IllegalArgumentException("Username contain '|'");
         }
+        if (username.equals("")){
+            throw new IllegalArgumentException("Input is empty");
+        }
         this.username = username;
     }
 
@@ -53,6 +62,9 @@ public class User {
     public void setPassword(String password) {
         if (password.contains("|")){
             throw new IllegalArgumentException("Password contain '|'");
+        }
+        if (password.equals("")){
+            throw new IllegalArgumentException("Input is empty");
         }
         this.password = password;
     }
@@ -65,6 +77,14 @@ public class User {
         if (phoneNumber.contains("|")){
             throw new IllegalArgumentException("Phone Number contain '|'");
         }
+        if (phoneNumber.equals("")){
+            throw new IllegalArgumentException("Input is empty");
+        }
+        // reject 60123456789, 012-456 6789 and othyer format
+        if (phoneNumber.length() != 10 || !phoneNumber.matches("\\d+")){
+            throw new IllegalArgumentException("provide phone number in the format of '0123016789'");
+        }
+        
         this.phoneNumber = phoneNumber;
     }
 

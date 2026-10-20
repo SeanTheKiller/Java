@@ -3,9 +3,6 @@ package login;
 import techniciancustomer.TechnicianFrame;
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 
 public class LoginFrame extends JFrame {
 
@@ -32,7 +29,7 @@ public class LoginFrame extends JFrame {
         formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
         formContainer.setBorder(BorderFactory.createEmptyBorder(10, 45, 15, 45));
 
-        // Username
+        // username row
         JPanel userRow = new JPanel(new BorderLayout(15, 0));
         JLabel userLabel = new JLabel("Username:");
         userLabel.setFont(labelFont);
@@ -45,7 +42,7 @@ public class LoginFrame extends JFrame {
         userRow.add(userLabel, BorderLayout.WEST);
         userRow.add(usernameField, BorderLayout.CENTER);
 
-        // Password
+        // password row
         JPanel passRow = new JPanel(new BorderLayout(15, 0));
         JLabel passLabel = new JLabel("Password:");
         passLabel.setFont(labelFont);
@@ -62,7 +59,7 @@ public class LoginFrame extends JFrame {
         formContainer.add(Box.createVerticalStrut(18));
         formContainer.add(passRow);
 
-        // Buttons
+        // buttons
         JButton loginButton = new JButton("Login");
         JButton exitButton = new JButton("Exit");
 
@@ -81,77 +78,39 @@ public class LoginFrame extends JFrame {
         add(formContainer, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
+        // when press button or hit Enter inside passfield, trigger checkLogin
         loginButton.addActionListener(e -> checkLogin());
         exitButton.addActionListener(e -> System.exit(0));
         passwordField.addActionListener(e -> checkLogin());
     }
 
     private void checkLogin() {
+        // grab whatever user typed into the text boxes
         String enteredUsername = usernameField.getText().trim();
         String enteredPassword = new String(passwordField.getPassword()).trim();
 
+        // if empty field, yell at user
         if (enteredUsername.isEmpty() || enteredPassword.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter both username and password.", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Locate users.txt whether running from /Java or /Java/Assignment
-        File file = new File("Assignment/data/users.txt");
-        if (!file.exists()) {
-            file = new File("data/users.txt");
-        }
+        // ask LoginManager to check txt file for us
+        String matchedRole = LoginManager.authenticate(enteredUsername, enteredPassword);
 
-        if (!file.exists()) {
-            JOptionPane.showMessageDialog(this, "Cannot find users.txt! Place it in data/ folder.", "File Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        boolean found = false;
-        String userRole = "";
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            boolean firstLine = true;
-
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-
-                // Skip header row
-                if (firstLine) {
-                    firstLine = false;
-                    continue;
-                }
-
-                String[] parts = line.split("\\|");
-                if (parts.length >= 3) {
-                    String fileUser = parts[0].trim();
-                    String filePass = parts[1].trim();
-                    String fileRole = parts[2].trim();
-
-                    if (fileUser.equals(enteredUsername) && filePass.equals(enteredPassword)) {
-                        found = true;
-                        userRole = fileRole;
-                        break;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error reading file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (found) {
+        // if matchedRole is not null, means login win
+        if (matchedRole != null) {
             JOptionPane.showMessageDialog(this, "Login successful! Welcome, " + enteredUsername);
-            openRoleDashboard(userRole, enteredUsername);
-            this.dispose();
+            openRoleDashboard(matchedRole, enteredUsername);
+            this.dispose(); // close login window
         } else {
+            // means wrong username or pass
             JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    // open corresponding dashboard window based on role
     private void openRoleDashboard(String role, String username) {
-        String enteredUser = usernameField.getText().trim();
         String r = role.trim().toUpperCase();
 
         if (r.equals("MANAGER")) {
@@ -164,7 +123,8 @@ public class LoginFrame extends JFrame {
 
         } else if (r.equals("TECHNICIAN")) {
             try {
-                techniciancustomer.TechnicianFrame frame = new techniciancustomer.TechnicianFrame(enteredUser);
+                // launch your technician window and pass username into it
+                TechnicianFrame frame = new TechnicianFrame(username);
                 frame.setVisible(true);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error opening Technician dashboard: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

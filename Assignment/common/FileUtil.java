@@ -12,7 +12,6 @@ import common.User;
 
 public class FileUtil {
     public static ArrayList<User> allUsers = new ArrayList<User>();
-    public static ArrayList<ServicePrice> allPrices = new ArrayList<ServicePrice>();
     public static User currentUser;
     
     private static final String DATA_DIR = "data";
@@ -66,39 +65,6 @@ public class FileUtil {
             lines.add(line);
         }
         write("users.txt", lines);
-    }
-
-    public static void loadPrices() {
-        allPrices.clear();
-        List<String> lines = read("prices.txt");
-        for (int i = 1; i < lines.size(); i++) {
-            String[] parts = lines.get(i).split("\\|");
-            if (parts.length >= 2) {
-                try {
-                    allPrices.add(new ServicePrice(parts[0], Double.parseDouble(parts[1])));
-                } catch (IllegalArgumentException ex) {
-                    System.out.println("Skipping invalid price record: " + lines.get(i));
-                }
-            }
-        }
-    }
-
-    public static void savePrices() {
-        List<String> lines = new ArrayList<>();
-        lines.add("serviceType|price");
-        for (ServicePrice servicePrice : allPrices) {
-            lines.add(servicePrice.getServiceType() + "|" + servicePrice.getPrice());
-        }
-        write("prices.txt", lines);
-    }
-
-    public static ServicePrice findPriceByServiceType(String serviceType) {
-        for (ServicePrice servicePrice : allPrices) {
-            if (servicePrice.getServiceType().equalsIgnoreCase(serviceType)) {
-                return servicePrice;
-            }
-        }
-        return null;
     }
     
     // fetch User class by username, return null if cant

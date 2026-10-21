@@ -11,7 +11,7 @@ public class LoginFrame extends JFrame {
 
     public LoginFrame() {
         setTitle("APU Automotive Service Centre Login");
-        setSize(550, 360);
+        setSize(500, 360);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);

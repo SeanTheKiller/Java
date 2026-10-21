@@ -1,6 +1,6 @@
 appointmentId|customerName|carPlate|serviceType|technician|status|customerComment|technicianFeedback
-APT001|Ali bin Hassan|WVG1234|Normal Service|sean|In Progress|Aircond blowing warm air and squeaking noise when braking|Checked engine oil level; replacing oil filter
-APT002|Tan Wei Ming|BMA8888|Major Service|sean|Completed|Engine vibrates violently when idling at traffic lights|Waiting for diagnostic scan tool
+APT001|Ali bin Hassan|WVG1234|Normal Service|sean|Completed|Aircond blowing warm air and squeaking noise when braking|Checked engine oil level; replacing oil filter
+APT002|Tan Wei Ming|BMA8888|Major Service|sean|In Progress|Engine vibrates violently when idling at traffic lights|Waiting for diagnostic scan tool
 APT003|Siti Nurhaliza|VAA5555|Normal Service|alex|Pending|Routine 10,000km scheduled service|Awaiting vehicle arrival
 APT004|Johnathan Lee|KDA9911|Major Service|sean|Completed|Car pulling slightly to the left on highway|Done engine flush, radiator coolant replaced, air filter changed
 APT005|Muthu Samy|PNG3321|Normal Service|sean|Pending|Wipers streaking and high beam bulb not working|Inspecting wiper blades and tire pressure

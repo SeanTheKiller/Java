@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package counter;
+package common;
 
 /**
  *
@@ -70,7 +70,7 @@ public class EditProfileDialog extends JDialog {
             user.setPhoneNumber(phoneNo);
             
             // save user
-            FileUtil.printAllUsers();
+//            FileUtil.printAllUsers();
             FileUtil.saveAllUsers();
             // if edited user is logged-in user, currentUser points to same object, auto synced
             dispose();

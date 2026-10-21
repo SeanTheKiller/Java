@@ -1,5 +1,7 @@
 package login;
 
+import common.FileUtil;
+import counter.CounterFrame;
 import techniciancustomer.TechnicianFrame;
 import javax.swing.*;
 import java.awt.*;
@@ -119,7 +121,12 @@ public class LoginFrame extends JFrame {
 
         } else if (r.equals("COUNTER") || r.equals("STAFF")) {
             JOptionPane.showMessageDialog(null, "Opening Counter Dashboard...");
-            // new counter.CounterFrame().setVisible(true);
+            FileUtil.loadAllUsers();
+            FileUtil.currentUser = FileUtil.findUserByUsername(username);
+            CounterFrame a = new CounterFrame();
+            a.setLocationRelativeTo(this);
+            a.setVisible(true);
+            
 
         } else if (r.equals("TECHNICIAN")) {
             try {

@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package counter;
+import common.EditProfileDialog;
 import common.FileUtil;
 import common.User;
+import login.LoginFrame;
 /**
  *
  * @author johnc
@@ -37,7 +39,7 @@ public class CounterFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Customer Menu");
+        setTitle("Counter Staff Menu");
         setLocationByPlatform(true);
 
         manageCustomerButton.setText("Manage customer");
@@ -55,7 +57,7 @@ public class CounterFrame extends javax.swing.JFrame {
         logoutButton.setText("Logout");
         logoutButton.addActionListener(this::logoutButtonActionPerformed);
 
-        jLabel1.setText("(Technicians) Choose one of the options:");
+        jLabel1.setText("(Counter Staff) Choose one of the options:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,8 +71,8 @@ public class CounterFrame extends javax.swing.JFrame {
                     .addComponent(manageAppointmentButton)
                     .addComponent(paymentButton)
                     .addComponent(logoutButton)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(63, Short.MAX_VALUE))
+                    .addComponent(jLabel1))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,11 +105,7 @@ public class CounterFrame extends javax.swing.JFrame {
 
     private void editProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editProfileButtonActionPerformed
         // TODO add your handling code here:
-        // hardcoded mock user, not real, need to pass in currentUser after login system created
-        FileUtil.loadAllUsers();
-        User cs = FileUtil.findUserByUsername("lim");
-        
-        EditProfileDialog d = new EditProfileDialog(this, cs);
+        EditProfileDialog d = new EditProfileDialog(this, FileUtil.currentUser);
         d.setLocationRelativeTo(this);
         d.setVisible(true);
     }//GEN-LAST:event_editProfileButtonActionPerformed
@@ -122,6 +120,9 @@ public class CounterFrame extends javax.swing.JFrame {
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         // TODO add your handling code here:
+        FileUtil.currentUser = null;
+        this.dispose();
+        new LoginFrame().setVisible(true);
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     /**

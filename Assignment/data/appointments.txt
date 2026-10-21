@@ -1,11 +1,11 @@
-appointmentId|customerName|carPlate|serviceType|technician|status|customerComment|technicianFeedback
-APT001|Ali bin Hassan|WVG1234|Normal Service|sean|Completed|Aircond blowing warm air and squeaking noise when braking|Checked engine oil level; replacing oil filter
-APT002|Tan Wei Ming|BMA8888|Major Service|sean|In Progress|Engine vibrates violently when idling at traffic lights|Waiting for diagnostic scan tool
-APT003|Siti Nurhaliza|VAA5555|Normal Service|alex|Pending|Routine 10,000km scheduled service|Awaiting vehicle arrival
-APT004|Johnathan Lee|KDA9911|Major Service|sean|Completed|Car pulling slightly to the left on highway|Done engine flush, radiator coolant replaced, air filter changed
-APT005|Muthu Samy|PNG3321|Normal Service|sean|Pending|Wipers streaking and high beam bulb not working|Inspecting wiper blades and tire pressure
-APT006|Chong Kah Wai|JQR7744|Major Service|muthu|In Progress|Heavy burning smell after driving uphill|Timing belt inspection and transmission oil replacement
-APT007|Ahmad Dani|WA2049C|Normal Service|sean|Completed|Check engine light turned on yesterday morning|Engine oil replaced with Fully Synthetic 5W-40. Fault code cleared.
-APT008|Emily Wong|VEE6012|Normal Service|alex|Completed|Steering wheel shakes when braking above 80kmh|Standard multi-point safety inspection cleared
-APT009|Rizal Ramli|BNC4190|Major Service|sean|In Progress|Clunking knocking noise from front suspension over bumps|Suspension bushings worn; customer notified for parts approval
-APT010|Karen Tan|PLA1108|Normal Service|muthu|Pending|Standard 20,000km periodic maintenance|Pending customer vehicle drop-off at counter
+appointmentId|customerName|carPlate|serviceType|datetime|technician|status|customerComment|technicianFeedback
+APT001|Ali bin Hassan|WVG1234|Normal Service|2026-10-21T10:00|sean|Completed|Aircond blowing warm air and squeaking noise when braking|Checked engine oil level; replacing oil filter
+APT002|Tan Wei Ming|BMA8888|Major Service|2026-10-21T14:30|sean|Pending|Engine vibrates violently when idling at traffic lights|Waiting for diagnostic scan tool
+APT003|Siti Nurhaliza|VAA5555|Normal Service|2026-10-22T09:30|alex|Pending|Routine 10,000km scheduled service|Awaiting vehicle arrival
+APT004|Johnathan Lee|KDA9911|Major Service|2026-10-20T11:00|sean|Completed|Car pulling slightly to the left on highway|Done engine flush, radiator coolant replaced, air filter changed
+APT005|Muthu Samy|PNG3321|Normal Service|2026-10-22T15:00|sean|Pending|Wipers streaking and high beam bulb not working|Inspecting wiper blades and tire pressure
+APT006|Chong Kah Wai|JQR7744|Major Service|2026-10-21T16:00|muthu|In Progress|Heavy burning smell after driving uphill|Timing belt inspection and transmission oil replacement
+APT007|Ahmad Dani|WA2049C|Normal Service|2026-10-20T14:00|sean|Completed|Check engine light turned on yesterday morning|Engine oil replaced with Fully Synthetic 5W-40. Fault code cleared.
+APT008|Emily Wong|VEE6012|Normal Service|2026-10-19T10:30|alex|Completed|Steering wheel shakes when braking above 80kmh|Standard multi-point safety inspection cleared
+APT009|Rizal Ramli|BNC4190|Major Service|2026-10-22T13:00|sean|In Progress|Clunking knocking noise from front suspension over bumps|Suspension bushings worn; customer notified for parts approval
+APT010|Karen Tan|PLA1108|Normal Service|2026-10-23T09:00|muthu|Pending|Standard 20,000km periodic maintenance|Pending customer vehicle drop-off at counter

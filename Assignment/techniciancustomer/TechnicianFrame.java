@@ -21,9 +21,9 @@ public class TechnicianFrame extends JFrame {
     private JLabel customerLabel;
     private JLabel carPlateLabel;
     private JLabel serviceTypeLabel;
+    private JLabel dateTimeLabel;
     private JComboBox<String> statusDropdown;
 
-    // Separate Comment and Feedback text areas
     private JTextArea customerCommentArea;
     private JTextArea technicianFeedbackArea;
 
@@ -31,8 +31,8 @@ public class TechnicianFrame extends JFrame {
         this.technicianName = technicianName;
 
         setTitle("APU Automotive Service Centre - Technician Portal");
-        setSize(1040, 700);
-        setMinimumSize(new Dimension(920, 600));
+        setSize(1080, 720);
+        setMinimumSize(new Dimension(950, 620));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -82,8 +82,8 @@ public class TechnicianFrame extends JFrame {
         headerPanel.add(titleSubPanel, BorderLayout.WEST);
         headerPanel.add(headerButtons, BorderLayout.EAST);
 
-        // 2. CENTER TABLE PANEL (Shows 8 columns)
-        String[] columns = {"Job ID", "Customer", "Car Plate", "Service Type", "Technician", "Status", "Customer Comment", "Technician Feedback"};
+        // 2. CENTER TABLE PANEL (9 Columns)
+        String[] columns = {"Job ID", "Customer", "Car Plate", "Service Type", "Date & Time", "Technician", "Status", "Customer Comment", "Technician Feedback"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -101,9 +101,10 @@ public class TechnicianFrame extends JFrame {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        jobTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        jobTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-        jobTable.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+        jobTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer); // Job ID
+        jobTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer); // Car Plate
+        jobTable.getColumnModel().getColumn(4).setCellRenderer(centerRenderer); // Date & Time
+        jobTable.getColumnModel().getColumn(6).setCellRenderer(centerRenderer); // Status
 
         JScrollPane tableScroll = new JScrollPane(jobTable);
         tableScroll.setBorder(BorderFactory.createTitledBorder(
@@ -127,7 +128,7 @@ public class TechnicianFrame extends JFrame {
         ));
 
         // Read-only order meta info (Left)
-        JPanel infoGrid = new JPanel(new GridLayout(4, 2, 8, 6));
+        JPanel infoGrid = new JPanel(new GridLayout(5, 2, 8, 6));
         infoGrid.setOpaque(false);
         infoGrid.setBorder(new EmptyBorder(5, 10, 5, 15));
 
@@ -135,6 +136,7 @@ public class TechnicianFrame extends JFrame {
         customerLabel = new JLabel("-");
         carPlateLabel = new JLabel("-");
         serviceTypeLabel = new JLabel("-");
+        dateTimeLabel = new JLabel("-");
 
         infoGrid.add(createBoldLabel("Selected Job ID:"));
         infoGrid.add(selectedJobLabel);
@@ -144,12 +146,13 @@ public class TechnicianFrame extends JFrame {
         infoGrid.add(carPlateLabel);
         infoGrid.add(createBoldLabel("Service Package:"));
         infoGrid.add(serviceTypeLabel);
+        infoGrid.add(createBoldLabel("Scheduled Date:"));
+        infoGrid.add(dateTimeLabel);
 
-        // Center: Customer Comment (Read-Only) vs. Technician Feedback (Editable)
+        // Center: Customer Comment (Read-Only) vs Technician Feedback (Editable)
         JPanel textAreasGrid = new JPanel(new GridLayout(1, 2, 12, 0));
         textAreasGrid.setOpaque(false);
 
-        // Customer Comment Box (Read-Only)
         JPanel commentBoxPanel = new JPanel(new BorderLayout(5, 5));
         commentBoxPanel.setOpaque(false);
         commentBoxPanel.add(createBoldLabel("Customer Comment / Reported Issue:"), BorderLayout.NORTH);
@@ -163,7 +166,6 @@ public class TechnicianFrame extends JFrame {
         JScrollPane commentScroll = new JScrollPane(customerCommentArea);
         commentBoxPanel.add(commentScroll, BorderLayout.CENTER);
 
-        // Technician Feedback Box (Editable)
         JPanel feedbackBoxPanel = new JPanel(new BorderLayout(5, 5));
         feedbackBoxPanel.setOpaque(false);
         feedbackBoxPanel.add(createBoldLabel("Technician Feedback / Service Log:"), BorderLayout.NORTH);
@@ -178,7 +180,7 @@ public class TechnicianFrame extends JFrame {
         textAreasGrid.add(commentBoxPanel);
         textAreasGrid.add(feedbackBoxPanel);
 
-        // Bottom status dropdown and Save button
+        // Status dropdown and Save button
         JPanel actionControls = new JPanel(new BorderLayout(10, 0));
         actionControls.setOpaque(false);
         actionControls.setBorder(new EmptyBorder(8, 0, 0, 0));
@@ -203,7 +205,6 @@ public class TechnicianFrame extends JFrame {
         actionControls.add(statusRow, BorderLayout.WEST);
         actionControls.add(saveButton, BorderLayout.EAST);
 
-        // Assemble bottom container
         JPanel centerBottom = new JPanel(new BorderLayout(10, 10));
         centerBottom.setOpaque(false);
         centerBottom.add(textAreasGrid, BorderLayout.CENTER);
@@ -212,14 +213,13 @@ public class TechnicianFrame extends JFrame {
         bottomPanel.add(infoGrid, BorderLayout.WEST);
         bottomPanel.add(centerBottom, BorderLayout.CENTER);
 
-        // Add everything to frame
         rootPanel.add(headerPanel, BorderLayout.NORTH);
         rootPanel.add(tableScroll, BorderLayout.CENTER);
         rootPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         setContentPane(rootPanel);
 
-        // Selection Listener
+        // Selection Listener for 9 columns
         jobTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int row = jobTable.getSelectedRow();
@@ -228,14 +228,15 @@ public class TechnicianFrame extends JFrame {
                     customerLabel.setText(tableModel.getValueAt(row, 1).toString());
                     carPlateLabel.setText(tableModel.getValueAt(row, 2).toString());
                     serviceTypeLabel.setText(tableModel.getValueAt(row, 3).toString());
-                    statusDropdown.setSelectedItem(tableModel.getValueAt(row, 5).toString());
+                    dateTimeLabel.setText(tableModel.getValueAt(row, 4).toString());
+                    statusDropdown.setSelectedItem(tableModel.getValueAt(row, 6).toString());
 
-                    // Column 6 = Customer Comment (Read-only)
-                    Object commentObj = tableModel.getValueAt(row, 6);
+                    // Column 7 = Customer Comment
+                    Object commentObj = tableModel.getValueAt(row, 7);
                     customerCommentArea.setText(commentObj != null ? commentObj.toString() : "");
 
-                    // Column 7 = Technician Feedback (Editable)
-                    Object feedbackObj = tableModel.getValueAt(row, 7);
+                    // Column 8 = Technician Feedback
+                    Object feedbackObj = tableModel.getValueAt(row, 8);
                     technicianFeedbackArea.setText(feedbackObj != null ? feedbackObj.toString() : "");
                 }
             }
@@ -276,9 +277,9 @@ public class TechnicianFrame extends JFrame {
         boolean success = TechnicianFunctions.updateJob(jobId, newStatus, newFeedback);
 
         if (success) {
-            // Update table model in place
-            tableModel.setValueAt(newStatus, selectedRow, 5);
-            tableModel.setValueAt(newFeedback, selectedRow, 7);
+            // Index 6 = Status, Index 8 = Feedback
+            tableModel.setValueAt(newStatus, selectedRow, 6);
+            tableModel.setValueAt(newFeedback, selectedRow, 8);
 
             JOptionPane.showMessageDialog(this, "Work Order " + jobId + " updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {

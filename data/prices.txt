@@ -1,0 +1,3 @@
+serviceType|price
+Normal Service|50.0
+Major Service|120.0

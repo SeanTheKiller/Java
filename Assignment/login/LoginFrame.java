@@ -120,7 +120,7 @@ public class LoginFrame extends JFrame {
             new manager.ManagerFrame().setVisible(true);
 
         } else if (r.equals("COUNTER") || r.equals("STAFF")) {
-//            JOptionPane.showMessageDialog(null, "Opening Counter Dashboard...");
+            JOptionPane.showMessageDialog(null, "Opening Counter Dashboard...");
             FileUtil.loadAllUsers();
             FileUtil.currentUser = FileUtil.findUserByUsername(username);
             CounterFrame a = new CounterFrame();
@@ -138,16 +138,11 @@ public class LoginFrame extends JFrame {
             }
 
         } else if (r.equals("CUSTOMER")) {
-<<<<<<< HEAD
             FileUtil.loadAllUsers();
             FileUtil.currentUser = FileUtil.findUserByUsername(username);
             customer.CustomerFrame frame = new customer.CustomerFrame(FileUtil.currentUser);
             frame.setLocationRelativeTo(this);
             frame.setVisible(true);
-=======
-            JOptionPane.showMessageDialog(null, "Opening Customer Dashboard...");
-            new techniciancustomer.CustomerFrame().setVisible(true);
->>>>>>> b8e477b (Update BS file)
 
         } else {
             JOptionPane.showMessageDialog(null, "Unrecognized role: " + role, "Login Error", JOptionPane.ERROR_MESSAGE);

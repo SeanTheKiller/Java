@@ -216,17 +216,21 @@ public class CreateAppointment extends javax.swing.JDialog {
             errors.add("Customer comment must be 200 characters or fewer.");
         }
         
-        LocalDateTime newDT = LocalDateTime.parse(datetime);
-        for (Appointment apt : ManageAppointmentFrame.allAppointments){
-            if (apt.getTechnician().equals(technician)){
-                LocalDateTime bookedDT = LocalDateTime.parse(apt.getDatetime());
-                long minsBetween = Duration.between(newDT, bookedDT).abs().toMinutes();
-                if (minsBetween < 180) {
-                    errors.add("This timeslot is already booked, find another technician or time");
+        try {
+            LocalDateTime newDT = LocalDateTime.parse(datetime);
+            for (Appointment apt : FileUtil.allAppointments){
+                if (apt.getTechnician().equals(technician)){
+                    LocalDateTime bookedDT = LocalDateTime.parse(apt.getDatetime());
+                    long minsBetween = Duration.between(newDT, bookedDT).abs().toMinutes();
+                    if (minsBetween < 180) {
+                        errors.add("This timeslot is already booked, find another technician or time");
+                    }
                 }
             }
+        } catch (DateTimeParseException e) {
+            //no need to add error again cuz earlier already add once
         }
-        
+
         if (!errors.isEmpty()) {
             JOptionPane.showMessageDialog(this, String.join("\n", errors), "Validation Error", JOptionPane.WARNING_MESSAGE);
             return;

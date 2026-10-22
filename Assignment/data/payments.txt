@@ -1,0 +1,4 @@
+appointmentId|billedAmount|paidAmount
+APT001|20.0|20.0
+APT002|15.5|10.0
+APT003|0.0|0.0

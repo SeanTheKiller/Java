@@ -9,10 +9,7 @@ import common.FileUtil;
  *
  * @author johnc
  */
-import java.util.ArrayList;
-import java.util.List;
 public class ManageAppointmentFrame extends javax.swing.JFrame {
-    public static ArrayList<Appointment> allAppointments;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ManageAppointmentFrame.class.getName());
     private static CustomerListPanel customerList = new CustomerListPanel();
     /**
@@ -21,7 +18,8 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
     public ManageAppointmentFrame() {
         initComponents();
         pack();
-        loadAllAppointment();
+        FileUtil.loadAllAppointments();
+        renderAllAppointments();
         fitTableColumns();
     }
 
@@ -80,7 +78,7 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false
@@ -120,12 +118,10 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
         if (dialog.createdAppointment != null) {
-            if (allAppointments == null) {
-                allAppointments = new ArrayList<>();
-            }
-            allAppointments.add(dialog.createdAppointment);
-            FileUtil.saveAllAppointments(allAppointments);
-            loadAllAppointment();
+            FileUtil.allAppointments.add(dialog.createdAppointment);
+            FileUtil.saveAllAppointments();
+            FileUtil.loadAllAppointments();
+            renderAllAppointments();
             fitTableColumns();
         }
     }//GEN-LAST:event_createCustomerActionPerformed
@@ -155,22 +151,14 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new ManageAppointmentFrame().setVisible(true));
     }
     
-    private void loadAllAppointment() {
-        List<String> lines = FileUtil.read("appointments.txt");
-        allAppointments = new ArrayList<>();
+    private void renderAllAppointments() {
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        for (int i = 1; i < lines.size(); i++) {
-            String line = lines.get(i);
-            String[] parts = line.split("\\|", -1);
-            if (parts.length >= 9) {
-                Appointment apt = new Appointment(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], parts[8]);
-                allAppointments.add(apt);
-                model.addRow(new Object[]{
-                    apt.getAppointmentId(), apt.getCustomerName(), apt.getCarPlate(), apt.getServiceType(),
-                    apt.getDatetime(), apt.getTechnician(), apt.getStatus(), apt.getCustomerComment(), apt.getTechnicianFeedback()
-                });
-            }
+        for (Appointment apt : FileUtil.allAppointments) {
+            model.addRow(new Object[]{
+                apt.getAppointmentId(), apt.getCustomerName(), apt.getCarPlate(), apt.getServiceType(),
+                apt.getDatetime(), apt.getTechnician(), apt.getStatus(), apt.getCustomerComment(), apt.getTechnicianFeedback()
+            });
         }
     }
 

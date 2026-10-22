@@ -71,7 +71,7 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="9" rowCount="1">
-                <Column editable="false" title="AppoinmentID" type="java.lang.String"/>
+                <Column editable="false" title="AppoinmentID" type="java.lang.Boolean"/>
                 <Column editable="false" title="Customer Name" type="java.lang.String"/>
                 <Column editable="false" title="Carplate" type="java.lang.String"/>
                 <Column editable="false" title="ServiceType" type="java.lang.String"/>

@@ -113,6 +113,7 @@ public class CounterFrame extends javax.swing.JFrame {
 
     private void manageAppointmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageAppointmentButtonActionPerformed
         // TODO add your handling code here:
+        FileUtil.loadAllAppointments();
         ManageAppointmentFrame a = new ManageAppointmentFrame();
         a.setLocationRelativeTo(this);
         a.setVisible(true);

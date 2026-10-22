@@ -83,6 +83,15 @@ public class FileUtil {
         }
         return allAppointments;
     }
+    
+    public static Appointment findAppointmentByID(String AppointmentID){
+        for (Appointment apt: allAppointments){
+            if (apt.getAppointmentId().equals(AppointmentID)){
+                return apt;
+            }
+        }
+        return null;
+    }
 
     public static void saveAllAppointments() {
         List<String> lines = new ArrayList();
@@ -107,6 +116,15 @@ public class FileUtil {
                 }
             }
         }
+    }
+    
+    public static Payment findPaymentByID(String AppointmentID){
+        for (Payment p: allPayment){
+            if (p.getAppointmentID().equals(AppointmentID)){
+                return p;
+            }
+        }
+        return null;
     }
     
     public static void saveAllPayments() {

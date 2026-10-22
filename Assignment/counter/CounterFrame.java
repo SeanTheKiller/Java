@@ -122,6 +122,10 @@ public class CounterFrame extends javax.swing.JFrame {
 
     private void paymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentButtonActionPerformed
         // TODO add your handling code here:
+        ManagePaymentFrame a = new ManagePaymentFrame();
+        a.setLocationRelativeTo(this);
+        a.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_paymentButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed

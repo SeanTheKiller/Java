@@ -55,6 +55,7 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         BackButton.setText("Back");
+        BackButton.addActionListener(this::BackButtonActionPerformed);
         jPanel1.add(BackButton);
 
         CollectPaymentButton.setText("Collect Payment");
@@ -166,6 +167,14 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
 
         showReceiptDialog(row);
     }//GEN-LAST:event_GenerateReceiptButtonActionPerformed
+
+    private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
+        // TODO add your handling code here:
+        CounterFrame a = new CounterFrame();
+        a.setLocationRelativeTo(this);
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BackButtonActionPerformed
 
     private void showReceiptDialog(int row) {
         String appointmentId = jTable1.getValueAt(row, 0).toString();

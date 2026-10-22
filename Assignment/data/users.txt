@@ -4,3 +4,5 @@ jeff|hehe|Manager|0129003489
 sean|haha|Technician|0123456789
 mike|mm|Customer|0123331234
 testing|aa|Customer|0123456789
+alex|alex|Technician|0123456789
+muthu|muthu|Technician|0174856473

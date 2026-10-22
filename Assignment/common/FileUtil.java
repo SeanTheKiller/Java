@@ -68,6 +68,15 @@ public class FileUtil {
         write("users.txt", lines);
     }
 
+    public static void saveAllAppointments(ArrayList<Appointment> allAppointments) {
+        List<String> lines = new ArrayList();
+        lines.add("appointmentId|customerName|carPlate|serviceType|datetime|technician|status|customerComment|technicianFeedback");
+        for (Appointment a : allAppointments) {
+            lines.add(a.toFileString());
+        }
+        write("appointments.txt", lines);
+    }
+
     public static void loadPrices() {
         allPrices.clear();
         List<String> lines = read("prices.txt");

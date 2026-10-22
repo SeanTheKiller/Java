@@ -45,7 +45,7 @@ public class CounterFrame extends javax.swing.JFrame {
         manageCustomerButton.setText("Manage customer");
         manageCustomerButton.addActionListener(this::manageCustomerButtonActionPerformed);
 
-        editProfileButton.setText("Edit Profile");
+        editProfileButton.setText("Edit Personal Profile");
         editProfileButton.addActionListener(this::editProfileButtonActionPerformed);
 
         manageAppointmentButton.setText("Create and Assign Appointments");
@@ -112,6 +112,10 @@ public class CounterFrame extends javax.swing.JFrame {
 
     private void manageAppointmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageAppointmentButtonActionPerformed
         // TODO add your handling code here:
+        ManageAppointmentFrame a = new ManageAppointmentFrame();
+        a.setLocationRelativeTo(this);
+        a.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_manageAppointmentButtonActionPerformed
 
     private void paymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentButtonActionPerformed

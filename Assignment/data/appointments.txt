@@ -9,3 +9,4 @@ APT007|Ahmad Dani|WA2049C|Normal Service|2026-10-20T14:00|sean|Completed|Check e
 APT008|Emily Wong|VEE6012|Normal Service|2026-10-19T10:30|alex|Completed|Steering wheel shakes when braking above 80kmh|Standard multi-point safety inspection cleared
 APT009|Rizal Ramli|BNC4190|Major Service|2026-10-22T13:00|sean|In Progress|Clunking knocking noise from front suspension over bumps|Suspension bushings worn; customer notified for parts approval
 APT010|Karen Tan|PLA1108|Normal Service|2026-10-23T09:00|muthu|Pending|Standard 20,000km periodic maintenance|Pending customer vehicle drop-off at counter
+APT011|Muhamad Bin|W7182J|Normal Service|2026-10-30T10:10|sean|Pending|change engine oil|

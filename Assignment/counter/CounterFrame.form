@@ -46,7 +46,7 @@
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="manageCustomerButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Component id="editProfileButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="manageAppointmentButton" min="-2" max="-2" attributes="0"/>
@@ -70,7 +70,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="editProfileButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Edit Profile"/>
+        <Property name="text" type="java.lang.String" value="Edit Personal Profile"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editProfileButtonActionPerformed"/>

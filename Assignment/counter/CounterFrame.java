@@ -45,7 +45,7 @@ public class CounterFrame extends javax.swing.JFrame {
         manageCustomerButton.setText("Manage customer");
         manageCustomerButton.addActionListener(this::manageCustomerButtonActionPerformed);
 
-        editProfileButton.setText("Edit Profile");
+        editProfileButton.setText("Edit Personal Profile");
         editProfileButton.addActionListener(this::editProfileButtonActionPerformed);
 
         manageAppointmentButton.setText("Create and Assign Appointments");
@@ -57,6 +57,7 @@ public class CounterFrame extends javax.swing.JFrame {
         logoutButton.setText("Logout");
         logoutButton.addActionListener(this::logoutButtonActionPerformed);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("(Counter Staff) Choose one of the options:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -64,24 +65,24 @@ public class CounterFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(98, 98, 98)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(manageCustomerButton)
-                    .addComponent(editProfileButton)
-                    .addComponent(manageAppointmentButton)
-                    .addComponent(paymentButton)
-                    .addComponent(logoutButton)
-                    .addComponent(jLabel1))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(paymentButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(manageCustomerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(editProfileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(manageAppointmentButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logoutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(manageCustomerButton)
                 .addGap(18, 18, 18)
+                .addComponent(manageCustomerButton)
+                .addGap(12, 12, 12)
                 .addComponent(editProfileButton)
                 .addGap(18, 18, 18)
                 .addComponent(manageAppointmentButton)
@@ -112,6 +113,10 @@ public class CounterFrame extends javax.swing.JFrame {
 
     private void manageAppointmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageAppointmentButtonActionPerformed
         // TODO add your handling code here:
+        ManageAppointmentFrame a = new ManageAppointmentFrame();
+        a.setLocationRelativeTo(this);
+        a.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_manageAppointmentButtonActionPerformed
 
     private void paymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentButtonActionPerformed

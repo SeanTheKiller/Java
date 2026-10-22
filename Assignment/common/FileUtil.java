@@ -12,7 +12,9 @@ import common.User;
 
 public class FileUtil {
     public static ArrayList<User> allUsers = new ArrayList<User>();
+    public static ArrayList<Appointment> allAppointments = new ArrayList<Appointment>();
     public static ArrayList<ServicePrice> allPrices = new ArrayList<ServicePrice>();
+    public static ArrayList<Payment> allPayment = new ArrayList<Payment>();
     public static User currentUser;
     
     private static final String DATA_DIR = "data";
@@ -68,6 +70,54 @@ public class FileUtil {
         write("users.txt", lines);
     }
 
+    public static ArrayList<Appointment> loadAllAppointments() {
+        allAppointments.clear();
+        List<String> lines = read("appointments.txt");
+        for (int i = 1; i < lines.size(); i++) {
+            String line = lines.get(i);
+            String[] parts = line.split("\\|", -1);
+            if (parts.length >= 9) {
+                allAppointments.add(new Appointment(parts[0], parts[1], parts[2], parts[3],
+                        parts[4], parts[5], parts[6], parts[7], parts[8]));
+            }
+        }
+        return allAppointments;
+    }
+
+    public static void saveAllAppointments() {
+        List<String> lines = new ArrayList();
+        lines.add("appointmentId|customerName|carPlate|serviceType|datetime|technician|status|customerComment|technicianFeedback");
+        for (Appointment a : allAppointments) {
+            lines.add(a.toFileString());
+        }
+        write("appointments.txt", lines);
+    }
+    
+    public static void loadAllPayments() {
+        allPayment.clear();
+        List<String> lines = read("payments.txt");
+        for (int i = 1; i < lines.size(); i++) {
+            String line = lines.get(i);
+            String[] parts = line.split("\\|");
+            if (parts.length >= 3) {
+                try {
+                    allPayment.add(new Payment(parts[0], parts[1], parts[2]));
+                } catch (IllegalArgumentException ex) {
+                    System.out.println("Skipping invalid payment record: " + lines.get(i));
+                }
+            }
+        }
+    }
+    
+    public static void saveAllPayments() {
+        List<String> lines = new ArrayList<>();
+        lines.add("appointmentId|billedAmount|paidAmount");
+        for (Payment p : allPayment) {
+            lines.add(p.getAppointmentID() + "|" + p.getBilledAmount() + "|" + p.getPaidAmount());
+        }
+        write("payments.txt", lines);
+    }
+
     public static void loadPrices() {
         allPrices.clear();
         List<String> lines = read("prices.txt");
@@ -116,18 +166,26 @@ public class FileUtil {
             System.out.println("User info are: "+u.username+" "+u.password+" "+u.role+" "+u.phoneNumber);
         }
     }
+    public static void printAllPayment() {
+        for (Payment p : allPayment){
+            System.out.println("Payment info are: "+p.getAppointmentID()+" "+p.getBilledAmount()+" "+p.getPaidAmount());
+        }
+    }
     
     public static void main(String[] args){
         // testing purposes
-        loadAllUsers();
-        printAllUsers();
-        saveAllUsers();
-        User a = findUserByUsername("lim ");
-        if (a != null){
-            System.out.println("Found user: "+a.username + " "+a.role);
-        } else {
-            System.out.println("cannot find user");
-        }
+//        loadAllUsers();
+//        printAllUsers();
+//        saveAllUsers();
+//        User a = findUserByUsername("lim ");
+//        if (a != null){
+//            System.out.println("Found user: "+a.username + " "+a.role);
+//        } else {
+//            System.out.println("cannot find user");
+//        }
+          loadAllPayments();
+          printAllPayment();
+          saveAllPayments();
     }
     
 }

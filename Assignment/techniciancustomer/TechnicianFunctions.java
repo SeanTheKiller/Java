@@ -19,7 +19,7 @@ public class TechnicianFunctions {
         return new File("data/" + fileName);
     }
 
-    // Read all appointments assigned to the logged-in technician
+    // 1. Read all appointments for technician (9 columns)
     public static List<String[]> getJobsForTechnician(String technicianUsername) {
         List<String[]> jobs = new ArrayList<>();
         File file = getDataFile("appointments.txt");
@@ -41,10 +41,22 @@ public class TechnicianFunctions {
                     continue;
                 }
 
-                String[] parts = line.split("\\|");
-                // Check if index 4 matches the technician username
-                if (parts.length >= 8 && parts[4].trim().equalsIgnoreCase(technicianUsername.trim())) {
-                    jobs.add(parts);
+                // Preserve trailing empty columns
+                String[] parts = line.split("\\|", -1);
+
+                // Index 5 is technician username
+                if (parts.length >= 6 && parts[5].trim().equalsIgnoreCase(technicianUsername.trim())) {
+                    String id = parts[0].trim();
+                    String cust = parts.length > 1 ? parts[1].trim() : "";
+                    String plate = parts.length > 2 ? parts[2].trim() : "";
+                    String service = parts.length > 3 ? parts[3].trim() : "";
+                    String datetime = parts.length > 4 ? parts[4].trim() : "";
+                    String tech = parts.length > 5 ? parts[5].trim() : "";
+                    String status = parts.length > 6 ? parts[6].trim() : "Pending";
+                    String comment = parts.length > 7 ? parts[7].trim() : "";
+                    String feedback = parts.length > 8 ? parts[8].trim() : "";
+
+                    jobs.add(new String[]{id, cust, plate, service, datetime, tech, status, comment, feedback});
                 }
             }
         } catch (Exception e) {
@@ -54,7 +66,7 @@ public class TechnicianFunctions {
         return jobs;
     }
 
-    // Update status and technician feedback (customerComment at index 6 is preserved)
+    // 2. Update status (index 6) and feedback (index 8)
     public static boolean updateJob(String appointmentId, String newStatus, String newFeedback) {
         File file = getDataFile("appointments.txt");
         if (!file.exists()) {
@@ -70,18 +82,27 @@ public class TechnicianFunctions {
                 String trimmed = line.trim();
                 if (trimmed.isEmpty()) continue;
 
-                String[] parts = trimmed.split("\\|");
-                if (parts.length >= 8 && parts[0].trim().equalsIgnoreCase(appointmentId.trim())) {
-                    // parts[6] = original customerComment (preserved)
-                    // parts[7] = updated technicianFeedback
+                String[] parts = trimmed.split("\\|", -1);
+
+                if (parts.length >= 7 && parts[0].trim().equalsIgnoreCase(appointmentId.trim())) {
+                    String cust = parts.length > 1 ? parts[1].trim() : "";
+                    String plate = parts.length > 2 ? parts[2].trim() : "";
+                    String service = parts.length > 3 ? parts[3].trim() : "";
+                    String datetime = parts.length > 4 ? parts[4].trim() : "";
+                    String tech = parts.length > 5 ? parts[5].trim() : "";
+                    String comment = parts.length > 7 ? parts[7].trim() : "";
+
+                    // Rebuild with updated status and feedback
                     String updated = parts[0].trim() + "|" +
-                                     parts[1].trim() + "|" +
-                                     parts[2].trim() + "|" +
-                                     parts[3].trim() + "|" +
-                                     parts[4].trim() + "|" +
+                                     cust + "|" +
+                                     plate + "|" +
+                                     service + "|" +
+                                     datetime + "|" +
+                                     tech + "|" +
                                      newStatus.trim() + "|" +
-                                     parts[6].trim() + "|" +
-                                     newFeedback.trim();
+                                     comment + "|" +
+                                     (newFeedback == null ? "" : newFeedback.trim());
+
                     allLines.add(updated);
                     found = true;
                 } else {
@@ -108,7 +129,7 @@ public class TechnicianFunctions {
         }
     }
 
-    // Retrieve technician credentials from users.txt
+    // 3. User profile helper
     public static String[] getUserProfile(String username) {
         File file = getDataFile("users.txt");
         if (!file.exists()) return null;
@@ -126,7 +147,7 @@ public class TechnicianFunctions {
                     continue;
                 }
 
-                String[] parts = line.split("\\|");
+                String[] parts = line.split("\\|", -1);
                 if (parts.length >= 4 && parts[0].trim().equalsIgnoreCase(username.trim())) {
                     return new String[]{parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim()};
                 }
@@ -138,7 +159,7 @@ public class TechnicianFunctions {
         return null;
     }
 
-    // Update technician password and phone in users.txt
+    // 4. Update profile in users.txt
     public static boolean updateProfile(String username, String newPassword, String newPhone) {
         File file = getDataFile("users.txt");
         if (!file.exists()) return false;
@@ -152,7 +173,7 @@ public class TechnicianFunctions {
                 String trimmed = line.trim();
                 if (trimmed.isEmpty()) continue;
 
-                String[] parts = trimmed.split("\\|");
+                String[] parts = trimmed.split("\\|", -1);
                 if (parts.length >= 4 && parts[0].trim().equalsIgnoreCase(username.trim())) {
                     String updated = parts[0].trim() + "|" +
                                      newPassword.trim() + "|" +

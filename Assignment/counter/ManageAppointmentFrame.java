@@ -3,13 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package counter;
-
+import common.Appointment;
+import common.FileUtil;
 /**
  *
  * @author johnc
  */
 public class ManageAppointmentFrame extends javax.swing.JFrame {
-    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ManageAppointmentFrame.class.getName());
     private static CustomerListPanel customerList = new CustomerListPanel();
     /**
@@ -17,9 +17,10 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
      */
     public ManageAppointmentFrame() {
         initComponents();
-        getContentPane().add(customerList, java.awt.BorderLayout.CENTER);
         pack();
-        
+        FileUtil.loadAllAppointments();
+        renderAllAppointments();
+        fitTableColumns();
     }
 
     /**
@@ -34,6 +35,24 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
         ButtonPanel = new javax.swing.JPanel();
         backToMenu = new javax.swing.JButton();
         createCustomer = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable() {
+            @Override
+            public java.awt.Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
+                java.awt.Component c = super.prepareRenderer(renderer, row, column);
+
+                if (c instanceof javax.swing.JComponent) {
+                    javax.swing.JComponent jc = (javax.swing.JComponent) c;
+
+                    // Define your custom border color and thickness here
+                    java.awt.Color borderColor = java.awt.Color.LIGHT_GRAY;
+                    int thickness = 1;
+
+                    jc.setBorder(javax.swing.BorderFactory.createLineBorder(borderColor, thickness));
+                }
+                return c;
+            }
+        };
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manage Customer");
@@ -50,6 +69,39 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
 
         getContentPane().add(ButtonPanel, java.awt.BorderLayout.SOUTH);
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "AppoinmentID", "Customer Name", "Carplate", "ServiceType", "Datetime", "Technician", "Status", "Comment", "Feedback"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setToolTipText("");
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(7).setMaxWidth(500);
+            jTable1.getColumnModel().getColumn(8).setMaxWidth(500);
+        }
+
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -60,9 +112,18 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
         a.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backToMenuActionPerformed
-
+    
     private void createCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCustomerActionPerformed
-        // TODO add your handling code here:
+        CreateAppointment dialog = new CreateAppointment(this, true);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        if (dialog.createdAppointment != null) {
+            FileUtil.allAppointments.add(dialog.createdAppointment);
+            FileUtil.saveAllAppointments();
+            FileUtil.loadAllAppointments();
+            renderAllAppointments();
+            fitTableColumns();
+        }
     }//GEN-LAST:event_createCustomerActionPerformed
 
     /**
@@ -89,10 +150,42 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new ManageAppointmentFrame().setVisible(true));
     }
+    
+    private void renderAllAppointments() {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        for (Appointment apt : FileUtil.allAppointments) {
+            model.addRow(new Object[]{
+                apt.getAppointmentId(), apt.getCustomerName(), apt.getCarPlate(), apt.getServiceType(),
+                apt.getDatetime(), apt.getTechnician(), apt.getStatus(), apt.getCustomerComment(), apt.getTechnicianFeedback()
+            });
+        }
+    }
+
+    private void fitTableColumns() {
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        javax.swing.table.TableColumnModel columnModel = jTable1.getColumnModel();
+        java.awt.FontMetrics fm = jTable1.getFontMetrics(jTable1.getFont());
+        int padding = 20;
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            javax.swing.table.TableColumn column = columnModel.getColumn(i);
+            int width = fm.stringWidth(column.getHeaderValue().toString()) + padding;
+            for (int row = 0; row < jTable1.getRowCount(); row++) {
+                Object value = jTable1.getValueAt(row, i);
+                if (value != null) {
+                    width = Math.max(width, fm.stringWidth(value.toString()) + padding);
+                }
+            }
+            column.setPreferredWidth(width);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonPanel;
     private javax.swing.JButton backToMenu;
     private javax.swing.JButton createCustomer;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

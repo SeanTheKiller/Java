@@ -1,0 +1,3 @@
+commentId|appointmentId|customerUsername|targetRole|targetUsername|comment|date
+CMT001|APT012|mike|Technician|sean|This is my first comment|2026-10-22
+CMT002|APT012|mike|Counter|lim|This is my second comment|2026-10-22

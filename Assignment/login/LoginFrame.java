@@ -138,8 +138,11 @@ public class LoginFrame extends JFrame {
             }
 
         } else if (r.equals("CUSTOMER")) {
-            JOptionPane.showMessageDialog(null, "Opening Customer Dashboard...");
-            // new techniciancustomer.CustomerFrame().setVisible(true);
+            FileUtil.loadAllUsers();
+            FileUtil.currentUser = FileUtil.findUserByUsername(username);
+            customer.CustomerFrame frame = new customer.CustomerFrame(FileUtil.currentUser);
+            frame.setLocationRelativeTo(this);
+            frame.setVisible(true);
 
         } else {
             JOptionPane.showMessageDialog(null, "Unrecognized role: " + role, "Login Error", JOptionPane.ERROR_MESSAGE);

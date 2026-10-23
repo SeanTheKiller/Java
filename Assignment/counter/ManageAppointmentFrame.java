@@ -57,7 +57,7 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
         };
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Manage Customer");
+        setTitle("Manage Appointment");
         setLocationByPlatform(true);
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 

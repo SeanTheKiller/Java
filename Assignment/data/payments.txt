@@ -4,4 +4,3 @@ APT002|15.5|11.0|lim|E-wallet
 APT003|0.0|0.0|lim|CreditCard
 APT004|20.0|20.0|lim|Cash
 APT012|50.0|0.0||
-APT013|120.0|0.0||

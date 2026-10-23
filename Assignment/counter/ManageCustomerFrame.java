@@ -4,12 +4,15 @@
  */
 package counter;
 
+import common.EditProfileDialog;
+import java.awt.BorderLayout;
+
 /**
  *
  * @author johnc
  */
 public class ManageCustomerFrame extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ManageCustomerFrame.class.getName());
     private static CustomerListPanel customerList = new CustomerListPanel();
     /**
@@ -17,9 +20,19 @@ public class ManageCustomerFrame extends javax.swing.JFrame {
      */
     public ManageCustomerFrame() {
         initComponents();
-        getContentPane().add(customerList, java.awt.BorderLayout.CENTER);
+        getContentPane().add(customerList, BorderLayout.CENTER);
+        createCustomer.addActionListener(e -> createCustomerActionPerformed());
         pack();
-        
+
+    }
+
+    private void createCustomerActionPerformed() {
+        // create mode of the shared dialog; modal, so code waits until it closes
+        EditProfileDialog d = new EditProfileDialog(this);
+        d.setLocationRelativeTo(this);
+        d.setVisible(true);
+        // refresh the list whether the customer was created or dialog was cancelled
+        customerList.refreshRows();
     }
 
     /**

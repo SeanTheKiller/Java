@@ -60,23 +60,33 @@ public class CRUDFrame extends javax.swing.JFrame {
         FileUtil.loadAllUsers();
         usersPanel.setLayout(new BoxLayout(usersPanel, BoxLayout.Y_AXIS));
 
-        JPanel header = new JPanel(new GridLayout(1, 5));
+        JPanel header = new JPanel(new GridLayout(1, 9));
         header.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         header.setBorder(new EmptyBorder(5, 5, 5, 5));
         header.add(new JLabel("Username"));
         header.add(new JLabel("Role"));
         header.add(new JLabel("Phone"));
+        header.add(new JLabel("Name"));
+        header.add(new JLabel("Age"));
+        header.add(new JLabel("Email"));
+        header.add(new JLabel("Home Address"));
         header.add(new JLabel("Edit"));
         header.add(new JLabel("Delete"));
         usersPanel.add(header);
 
         for (User user : FileUtil.allUsers) {
-            JPanel row = new JPanel(new GridLayout(1, 5));
+            JPanel row = new JPanel(new GridLayout(1, 9));
             row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
             row.setBorder(new EmptyBorder(2, 5, 2, 5));
             row.add(new JLabel(user.getUsername()));
             row.add(new JLabel(user.getRole()));
             row.add(new JLabel(user.getPhoneNumber()));
+            row.add(new JLabel(user.getName()));
+            row.add(new JLabel(String.valueOf(user.getAge())));
+            row.add(new JLabel(user.getEmail()));
+            JLabel addr = new JLabel(user.getHomeAddress());
+            addr.setToolTipText(user.getHomeAddress());
+            row.add(addr);
 
             JButton editButton = new JButton("Edit");
             editButton.addActionListener(e -> editUser(user));
@@ -89,7 +99,7 @@ public class CRUDFrame extends javax.swing.JFrame {
         }
 
         setTitle("Manage Users");
-        setSize(650, 400);
+        setSize(900, 400);
         setLocationRelativeTo(null);
     }
 
@@ -98,6 +108,10 @@ public class CRUDFrame extends javax.swing.JFrame {
         JTextField passwordField = new JTextField(user.getPassword());
         JTextField roleField = new JTextField(user.getRole());
         JTextField phoneField = new JTextField(user.getPhoneNumber());
+        JTextField ageField = new JTextField(String.valueOf(user.getAge()));
+        JTextField nameField = new JTextField(user.getName());
+        JTextField emailField = new JTextField(user.getEmail());
+        JTextField addressField = new JTextField(user.getHomeAddress());
         JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
         form.add(new JLabel("Username"));
         form.add(usernameField);
@@ -107,6 +121,14 @@ public class CRUDFrame extends javax.swing.JFrame {
         form.add(roleField);
         form.add(new JLabel("Phone Number"));
         form.add(phoneField);
+        form.add(new JLabel("Age"));
+        form.add(ageField);
+        form.add(new JLabel("Name"));
+        form.add(nameField);
+        form.add(new JLabel("Email"));
+        form.add(emailField);
+        form.add(new JLabel("Home Address"));
+        form.add(addressField);
 
         int result = JOptionPane.showConfirmDialog(
                 this, form, "Edit User", JOptionPane.OK_CANCEL_OPTION);
@@ -120,7 +142,11 @@ public class CRUDFrame extends javax.swing.JFrame {
                     usernameField.getText(),
                     passwordField.getText(),
                     roleField.getText(),
-                    phoneField.getText());
+                    phoneField.getText(),
+                    ageField.getText(),
+                    nameField.getText(),
+                    emailField.getText(),
+                    addressField.getText().replace("\n", " "));
             buildUserList();
             revalidate();
             repaint();

@@ -53,13 +53,24 @@ public class FileUtil {
         List<String> lines = read("users.txt");
         for (int i = 1; i < lines.size(); i++) {
             String line = lines.get(i);
-            String[] parts = line.split("\\|");
-            if (parts.length >= 4) {
-                if (parts[2].trim().equalsIgnoreCase("Customer")) {
-                    new customer.Customer(parts[0], parts[1], parts[3]);
-                    
-                } else {
-                    new User(parts[0], parts[1], parts[2], parts[3]);
+            if (line.trim().isEmpty()) {
+                continue;
+            }
+            // -1 keeps empty columns (e.g. a blank homeAddress)
+            String[] parts = line.split("\\|", -1);
+            if (parts.length >= 8) {
+                try {
+                    int age = Integer.parseInt(parts[4].trim());
+                    if (parts[2].trim().equalsIgnoreCase("Customer")) {
+                        new customer.Customer(parts[0], parts[1], parts[3],
+                                age, parts[5], parts[6], parts[7]);
+
+                    } else {
+                        new User(parts[0], parts[1], parts[2], parts[3],
+                                age, parts[5], parts[6], parts[7]);
+                    }
+                } catch (IllegalArgumentException ex) {
+                    System.out.println("Skipping invalid user record: " + line);
                 }
             }
         }
@@ -67,9 +78,10 @@ public class FileUtil {
     
     public static void saveAllUsers() {
         List<String> lines = new ArrayList();
-        lines.add("username|password|role|phoneNumber");
+        lines.add("username|password|role|phoneNumber|age|name|email|homeAddress");
         for (User u: allUsers){
-            String line = u.username+"|"+u.password+"|"+u.role+"|"+u.phoneNumber;
+            String line = u.username+"|"+u.password+"|"+u.role+"|"+u.phoneNumber
+                    +"|"+u.age+"|"+u.name+"|"+u.email+"|"+u.homeAddress;
             lines.add(line);
         }
         write("users.txt", lines);
@@ -194,7 +206,8 @@ public class FileUtil {
     
     public static void printAllUsers() {
         for (User u : allUsers){
-            System.out.println("User info are: "+u.username+" "+u.password+" "+u.role+" "+u.phoneNumber);
+            System.out.println("User info are: "+u.username+" "+u.password+" "+u.role+" "+u.phoneNumber
+                    +" "+u.age+" "+u.name+" "+u.email+" "+u.homeAddress);
         }
     }
     public static void printAllPayment() {

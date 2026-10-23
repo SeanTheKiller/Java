@@ -13,31 +13,24 @@ public class User {
     String password;
     String role;
     String phoneNumber;
+    int age;
+    String name;
+    String email;
+    String homeAddress;
 
-    public User(String username, String password, String role, String phonenumber) {
-        if (username.contains("|")||password.contains("|")||phonenumber.contains("|")||role.contains("|")){
-            throw new IllegalArgumentException("Input contain '|'");
-        }
-        if (username.equals("")||password.equals("")||phonenumber.equals("")||role.equals("")){
-            throw new IllegalArgumentException("Input is empty");
-        }
+    public User(String username, String password, String role, String phoneNumber,
+            int age, String name, String email, String homeAddress) {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.phoneNumber = phonenumber;
-        FileUtil.allUsers.add(this);
-    }
-
-    public User(String username, String password, String role) {
-        if (username.contains("|")||password.contains("|")){
-            throw new IllegalArgumentException("Input contain '|'");
-        }
-        if (username.equals("")||password.equals("")||role.equals("")){
-            throw new IllegalArgumentException("Input is empty");
-        }
-        this.username = username;
-        this.password = password;
-        this.role = role;
+        setUsername(username);
+        setPassword(password);
+        setRole(role);
+        setPhoneNumber(phoneNumber);
+        setAge(age);
+        setName(name);
+        setEmail(email);
+        setHomeAddress(homeAddress);
         FileUtil.allUsers.add(this);
     }
 
@@ -97,6 +90,60 @@ public class User {
             throw new IllegalArgumentException("Role contain '|'");
         }
         this.role = role;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if (age < 1 || age > 120){
+            throw new IllegalArgumentException("Age must be a number between 1 and 120");
+        }
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name.contains("|")){
+            throw new IllegalArgumentException("Name contain '|'");
+        }
+        if (name.equals("")){
+            throw new IllegalArgumentException("Input is empty");
+        }
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        if (email.contains("|")){
+            throw new IllegalArgumentException("Email contain '|'");
+        }
+        if (email.equals("")){
+            throw new IllegalArgumentException("Input is empty");
+        }
+        this.email = email;
+    }
+
+    public String getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(String homeAddress) {
+        if (homeAddress.contains("|")){
+            throw new IllegalArgumentException("Home Address contain '|'");
+        }
+        if (homeAddress.equals("")){
+            throw new IllegalArgumentException("Input is empty");
+        }
+        // a record must stay on one line
+        this.homeAddress = homeAddress.replace("\n", " ");
     }
     
     public static void main(String[] args){

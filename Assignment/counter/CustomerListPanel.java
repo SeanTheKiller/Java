@@ -29,40 +29,63 @@ public class CustomerListPanel extends javax.swing.JPanel {
         generateRows();
     }
     
+    // public so parent frames can refresh the rows after create/edit/delete
+    public void refreshRows() {
+        generateRows();
+    }
+
     private void generateRows() {
         FileUtil.loadAllUsers();
         itemsPanel.removeAll();
         itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
 
-        JPanel header = new JPanel(new GridLayout(1, 5));
+        JPanel header = new JPanel(new GridLayout(1, 9));
         header.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         header.setBorder(new EmptyBorder(5, 5, 5, 5));
         JLabel h1 = new JLabel("Username");
         JLabel h2 = new JLabel("Role");
         JLabel h3 = new JLabel("Phone");
-        JLabel h4 = new JLabel("");
-        JLabel h5 = new JLabel("Actions");
+        JLabel h4 = new JLabel("Name");
+        JLabel hn = new JLabel("Age");
+        JLabel he = new JLabel("Email");
+        JLabel ha = new JLabel("Home Address");
+        JLabel h5 = new JLabel("");
+        JLabel h6 = new JLabel("Actions");
         h1.setFont(h1.getFont().deriveFont(java.awt.Font.BOLD));
         h2.setFont(h2.getFont().deriveFont(java.awt.Font.BOLD));
         h3.setFont(h3.getFont().deriveFont(java.awt.Font.BOLD));
-        h5.setFont(h5.getFont().deriveFont(java.awt.Font.BOLD));
+        h4.setFont(h4.getFont().deriveFont(java.awt.Font.BOLD));
+        hn.setFont(hn.getFont().deriveFont(java.awt.Font.BOLD));
+        he.setFont(he.getFont().deriveFont(java.awt.Font.BOLD));
+        ha.setFont(ha.getFont().deriveFont(java.awt.Font.BOLD));
+        h6.setFont(h6.getFont().deriveFont(java.awt.Font.BOLD));
         header.add(h1);
         header.add(h2);
         header.add(h3);
         header.add(h4);
+        header.add(hn);
+        header.add(he);
+        header.add(ha);
         header.add(h5);
+        header.add(h6);
         itemsPanel.add(header);
 
         for (User u : FileUtil.allUsers) {
             if (u.getRole() == null || !u.getRole().equalsIgnoreCase("Customer")) {
                 continue;
             }
-            JPanel row = new JPanel(new GridLayout(1, 5));
+            JPanel row = new JPanel(new GridLayout(1, 9));
             row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
             row.setBorder(new EmptyBorder(2, 5, 2, 5));
             row.add(new JLabel(u.getUsername()));
             row.add(new JLabel(u.getRole()));
             row.add(new JLabel(u.getPhoneNumber() != null ? u.getPhoneNumber() : ""));
+            row.add(new JLabel(u.getName() != null ? u.getName() : ""));
+            row.add(new JLabel(u.getAge() > 0 ? String.valueOf(u.getAge()) : ""));
+            row.add(new JLabel(u.getEmail() != null ? u.getEmail() : ""));
+            JLabel addr = new JLabel(u.getHomeAddress() != null ? u.getHomeAddress() : "");
+            addr.setToolTipText(u.getHomeAddress());
+            row.add(addr);
 
             JButton editButton = new JButton("Edit");
             editButton.addActionListener(e -> openEditDialog(u));

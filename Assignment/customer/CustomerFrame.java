@@ -25,6 +25,10 @@ public class CustomerFrame extends JFrame {
     // Profile tab labels
     private JLabel usernameLabel = new JLabel();
     private JLabel phoneLabel = new JLabel();
+    private JLabel ageLabel = new JLabel();
+    private JLabel fullNameLabel = new JLabel();
+    private JLabel emailLabel = new JLabel();
+    private JLabel addressLabel = new JLabel();
 
     // Tables (each needs a "model" that holds its rows)
     private DefaultTableModel historyModel = makeModel("Appointment ID", "Car Plate", "Service", "Date & Time", "Technician", "Status");
@@ -79,6 +83,14 @@ public class CustomerFrame extends JFrame {
         info.add(usernameLabel);
         info.add(new JLabel("Phone Number:"));
         info.add(phoneLabel);
+        info.add(new JLabel("Age:"));
+        info.add(ageLabel);
+        info.add(new JLabel("Name:"));
+        info.add(fullNameLabel);
+        info.add(new JLabel("Email:"));
+        info.add(emailLabel);
+        info.add(new JLabel("Home Address:"));
+        info.add(addressLabel);
         info.add(new JLabel("Role:"));
         info.add(new JLabel("Customer"));
 
@@ -142,6 +154,10 @@ public class CustomerFrame extends JFrame {
     private void refreshAll() {
         usernameLabel.setText(user.getUsername());
         phoneLabel.setText(user.getPhoneNumber());
+        ageLabel.setText(String.valueOf(user.getAge()));
+        fullNameLabel.setText(user.getName());
+        emailLabel.setText(user.getEmail());
+        addressLabel.setText(user.getHomeAddress());
 
         // Service history
         historyModel.setRowCount(0);   // clear old rows

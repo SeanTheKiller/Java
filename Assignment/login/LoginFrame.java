@@ -3,6 +3,7 @@ package login;
 import counter.CounterFrame;
 import manager.ManagerFrame;
 import techniciancustomer.TechnicianFrame;
+import common.FileUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -123,15 +124,20 @@ public class LoginFrame extends JFrame {
                 this.dispose();
 
             } else if (r.equals("CUSTOMER")) {
-                boolean opened = tryOpenCustomerFrame(username);
-                if (opened) {
-                    this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, 
-                        "Customer dashboard constructor mismatch.\nPlease check CustomerFrame.java constructor signature.", 
-                        "Customer Module Notice", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                }
+//                boolean opened = tryOpenCustomerFrame(username);
+//                if (opened) {
+//                    this.dispose();
+//                } else {
+//                    JOptionPane.showMessageDialog(this, 
+//                        "Customer dashboard constructor mismatch.\nPlease check CustomerFrame.java constructor signature.", 
+//                        "Customer Module Notice", 
+//                        JOptionPane.INFORMATION_MESSAGE);
+//                }
+                FileUtil.loadAllUsers();
+                FileUtil.currentUser = FileUtil.findUserByUsername(username);
+                customer.CustomerFrame frame = new customer.CustomerFrame(FileUtil.currentUser);
+                frame.setLocationRelativeTo(this);
+                frame.setVisible(true);
 
             } else {
                 JOptionPane.showMessageDialog(this, "Unrecognized role: " + role, "Login Error", JOptionPane.ERROR_MESSAGE);

@@ -8,4 +8,4 @@ alex|alex|Technician|0123456789|31|Alex Phang|alex.phang@apu.edu.my|56 Jalan Buk
 muthu|muthu|Technician|0174856473|38|Muthu Krishnan|muthu.krishnan@apu.edu.my|9 Jalan Kampung, 47600 Subang Jaya
 bill|bill|Manager|0182495728|57|Bill Ding|bd@hotsmail.com|29, Jalan Rumah 99, Taman Pembinaan
 cass|cc|Customer|0193852763|20|Cass Tomer|casstomer@consumermail.com|10, Jalan Pengguna, Taman Pelanggan
-sean|haha|Technician|0127465757|19|Sean Lee|sean@gmail.com|10, Jalan Bapak Saya, Taman Bapak Saya
+MatSabu67|mat7|Customer|0161234567|67|Mat Sabu|mat67@gmail.com|11 Blok E Phileo D'Sara 1, Jln 16/11, Off Jln Damansara, Seksyen 16

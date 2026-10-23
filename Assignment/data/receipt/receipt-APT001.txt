@@ -1,6 +1,6 @@
 =============== SERVICE RECEIPT ===============
 Receipt No : R-APT001
-Generated  : 2026-10-23 18:25:23
+Generated  : 2026-10-23 17:49:11
 -----------------------------------------------
 Appointment ID : APT001
 Customer Name  : mike

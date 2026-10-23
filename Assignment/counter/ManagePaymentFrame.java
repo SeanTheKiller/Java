@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -71,14 +72,14 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Appointment ID", "Service Type", "Datetime", "Service Status", "Billed Amount", "Paid Amount"
+                "Appointment ID", "Service Type", "Datetime", "Service Status", "Billed Amount", "Paid Amount", "Staff member", "Payment Method"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -97,7 +98,9 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,6 +182,7 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
     private void showReceiptDialog(int row) {
         String appointmentId = jTable1.getValueAt(row, 0).toString();
         Appointment apt = FileUtil.findAppointmentByID(appointmentId);
+        Payment pmt = FileUtil.findPaymentByID(appointmentId);
         String generatedAt = java.time.LocalDateTime.now()
                 .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
@@ -198,6 +202,8 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
         lines.add("Billed Amount  : RM " + String.format("%.2f", jTable1.getValueAt(row, 4)));
         lines.add("Paid Amount    : RM " + String.format("%.2f", jTable1.getValueAt(row, 5)));
         lines.add("Status         : FULLY PAID");
+        lines.add("Counter Staff  : " + (pmt != null && !pmt.getCounterStaff().isEmpty() ? pmt.getCounterStaff() : "-"));
+        lines.add("Payment Method : " + (pmt != null && !pmt.getPaymentMethod().isEmpty() ? pmt.getPaymentMethod() : "-"));
         lines.add("===============================================");
         lines.add("Thank you for choosing our service!");
         FileUtil.write("Receipt-" + appointmentId + ".txt", lines);
@@ -252,9 +258,15 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
         model.setRowCount(0);
         for (Payment p : FileUtil.allPayment) {
             Appointment apt = FileUtil.findAppointmentByID(p.getAppointmentID());
-            model.addRow(new Object[]{
-                apt.getAppointmentId(), apt.getServiceType(), apt.getDatetime(), apt.getStatus(), p.getBilledAmount(), p.getPaidAmount()
-            });
+            if (model.getColumnCount() >= 8) {
+                model.addRow(new Object[]{
+                    apt.getAppointmentId(), apt.getServiceType(), apt.getDatetime(), apt.getStatus(), p.getBilledAmount(), p.getPaidAmount(), p.getCounterStaff(), p.getPaymentMethod()
+                });
+            } else {
+                model.addRow(new Object[]{
+                    apt.getAppointmentId(), apt.getServiceType(), apt.getDatetime(), apt.getStatus(), p.getBilledAmount(), p.getPaidAmount()
+                });
+            }
         }
     }
 
@@ -264,12 +276,14 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
 
         JDialog dialog = new JDialog(this, "Collect Payment - " + appointmentId, true);
         dialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        dialog.setSize(320, 180);
+        dialog.setSize(330, 240);
         dialog.setResizable(false);
         dialog.setLocationRelativeTo(this);
 
         JLabel amountLabel = new JLabel("Payment collected (RM): ");
         JTextField amountField = new JTextField(10);
+        JLabel methodLabel = new JLabel("Payment method: ");
+        JComboBox<String> methodBox = new JComboBox<>(new String[]{"", "Cash", "Card", "e-Wallet"});
         JLabel errorLabel = new JLabel(" ");
         errorLabel.setForeground(Color.RED);
 
@@ -278,6 +292,7 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
 
         confirmButton.addActionListener(evt -> {
             String input = amountField.getText().trim();
+            Object method = methodBox.getSelectedItem();
             try {
                 double amount = Double.parseDouble(input);
                 if (amount <= 0) {
@@ -288,9 +303,17 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
                     errorLabel.setText("Invalid: amount exceeds balance (RM " + String.format("%.2f", balance) + ").");
                     return;
                 }
+                if (method == null || method.toString().isEmpty()) {
+                    errorLabel.setText("Invalid: please choose a payment method.");
+                    return;
+                }
                 Payment p = FileUtil.findPaymentByID(appointmentId);
                 if (p != null) {
                     p.setPaidAmount(p.getPaidAmount() + amount);
+                    if (FileUtil.currentUser != null) {
+                        p.setCounterStaff(FileUtil.currentUser.getUsername());
+                    }
+                    p.setPaymentMethod(method.toString());
                     FileUtil.saveAllPayments();
                     loadPayment();
                 }
@@ -306,6 +329,8 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
 
         dialog.add(amountLabel);
         dialog.add(amountField);
+        dialog.add(methodLabel);
+        dialog.add(methodBox);
         dialog.add(errorLabel);
         dialog.add(confirmButton);
         dialog.add(cancelButton);

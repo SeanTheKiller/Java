@@ -1,4 +1,5 @@
-appointmentId|billedAmount|paidAmount
-APT001|20.0|20.0
-APT002|15.5|11.0
-APT003|0.0|0.0
+appointmentId|billedAmount|paidAmount|counterStaff|paymentMethod
+APT001|20.0|20.0|lim|Cash
+APT002|15.5|11.0|lim|E-wallet
+APT003|0.0|0.0|lim|CreditCard
+APT004|20.0|5.0|lim|Cash

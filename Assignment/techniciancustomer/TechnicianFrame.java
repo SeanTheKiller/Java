@@ -13,10 +13,10 @@ import java.util.List;
 public class TechnicianFrame extends JFrame {
 
     private String technicianName;
+    private JLabel welcomeLabel;
     private JTable jobTable;
     private DefaultTableModel tableModel;
 
-    // Detail Panel Components
     private JLabel selectedJobLabel;
     private JLabel customerLabel;
     private JLabel carPlateLabel;
@@ -52,7 +52,7 @@ public class TechnicianFrame extends JFrame {
         JPanel titleSubPanel = new JPanel(new GridLayout(2, 1, 0, 4));
         titleSubPanel.setOpaque(false);
 
-        JLabel welcomeLabel = new JLabel("Welcome back, Technician " + technicianName);
+        welcomeLabel = new JLabel("Welcome back, Technician " + technicianName);
         welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 19));
         welcomeLabel.setForeground(new Color(33, 37, 41));
 
@@ -82,7 +82,7 @@ public class TechnicianFrame extends JFrame {
         headerPanel.add(titleSubPanel, BorderLayout.WEST);
         headerPanel.add(headerButtons, BorderLayout.EAST);
 
-        // 2. CENTER TABLE PANEL (9 Columns)
+        // 2. CENTER TABLE PANEL (9 columns)
         String[] columns = {"Job ID", "Customer", "Car Plate", "Service Type", "Date & Time", "Technician", "Status", "Customer Comment", "Technician Feedback"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -101,10 +101,10 @@ public class TechnicianFrame extends JFrame {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        jobTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer); // Job ID
-        jobTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer); // Car Plate
-        jobTable.getColumnModel().getColumn(4).setCellRenderer(centerRenderer); // Date & Time
-        jobTable.getColumnModel().getColumn(6).setCellRenderer(centerRenderer); // Status
+        jobTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        jobTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        jobTable.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+        jobTable.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
 
         JScrollPane tableScroll = new JScrollPane(jobTable);
         tableScroll.setBorder(BorderFactory.createTitledBorder(
@@ -127,7 +127,6 @@ public class TechnicianFrame extends JFrame {
                 new Font("SansSerif", Font.BOLD, 13)
         ));
 
-        // Read-only order meta info (Left)
         JPanel infoGrid = new JPanel(new GridLayout(5, 2, 8, 6));
         infoGrid.setOpaque(false);
         infoGrid.setBorder(new EmptyBorder(5, 10, 5, 15));
@@ -149,7 +148,7 @@ public class TechnicianFrame extends JFrame {
         infoGrid.add(createBoldLabel("Scheduled Date:"));
         infoGrid.add(dateTimeLabel);
 
-        // Center: Customer Comment (Read-Only) vs Technician Feedback (Editable)
+        // Center Text Areas
         JPanel textAreasGrid = new JPanel(new GridLayout(1, 2, 12, 0));
         textAreasGrid.setOpaque(false);
 
@@ -219,7 +218,7 @@ public class TechnicianFrame extends JFrame {
 
         setContentPane(rootPanel);
 
-        // Selection Listener for 9 columns
+        // Selection Listener
         jobTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int row = jobTable.getSelectedRow();
@@ -231,11 +230,9 @@ public class TechnicianFrame extends JFrame {
                     dateTimeLabel.setText(tableModel.getValueAt(row, 4).toString());
                     statusDropdown.setSelectedItem(tableModel.getValueAt(row, 6).toString());
 
-                    // Column 7 = Customer Comment
                     Object commentObj = tableModel.getValueAt(row, 7);
                     customerCommentArea.setText(commentObj != null ? commentObj.toString() : "");
 
-                    // Column 8 = Technician Feedback
                     Object feedbackObj = tableModel.getValueAt(row, 8);
                     technicianFeedbackArea.setText(feedbackObj != null ? feedbackObj.toString() : "");
                 }
@@ -260,6 +257,14 @@ public class TechnicianFrame extends JFrame {
 
         if (tableModel.getRowCount() > 0) {
             jobTable.setRowSelectionInterval(0, 0);
+        } else {
+            selectedJobLabel.setText("-");
+            customerLabel.setText("-");
+            carPlateLabel.setText("-");
+            serviceTypeLabel.setText("-");
+            dateTimeLabel.setText("-");
+            customerCommentArea.setText("");
+            technicianFeedbackArea.setText("");
         }
     }
 
@@ -277,7 +282,6 @@ public class TechnicianFrame extends JFrame {
         boolean success = TechnicianFunctions.updateJob(jobId, newStatus, newFeedback);
 
         if (success) {
-            // Index 6 = Status, Index 8 = Feedback
             tableModel.setValueAt(newStatus, selectedRow, 6);
             tableModel.setValueAt(newFeedback, selectedRow, 8);
 
@@ -287,6 +291,7 @@ public class TechnicianFrame extends JFrame {
         }
     }
 
+    // Modal dialog with all 8 fields: 7 editable, ROLE locked
     private void openEditProfileDialog() {
         String[] profile = TechnicianFunctions.getUserProfile(technicianName);
 
@@ -296,55 +301,122 @@ public class TechnicianFrame extends JFrame {
         }
 
         JDialog dialog = new JDialog(this, "Edit Technician Profile", true);
-        dialog.setSize(380, 290);
+        dialog.setSize(480, 520);
         dialog.setLocationRelativeTo(this);
         dialog.setLayout(new BorderLayout());
 
-        JPanel formPanel = new JPanel(new GridLayout(4, 2, 10, 12));
+        JPanel formPanel = new JPanel(new GridLayout(8, 2, 10, 10));
         formPanel.setBorder(new EmptyBorder(20, 25, 10, 25));
 
-        JTextField usernameDisplay = new JTextField(profile[0]);
-        usernameDisplay.setEditable(false);
+        // Form Fields
+        JTextField usernameInput = new JTextField(profile[0]);
+        JPasswordField passwordInput = new JPasswordField(profile[1]);
 
+        // Role is strictly locked
         JTextField roleDisplay = new JTextField(profile[2]);
         roleDisplay.setEditable(false);
+        roleDisplay.setBackground(new Color(238, 240, 243));
+        roleDisplay.setToolTipText("System Role cannot be modified.");
 
-        JPasswordField passwordInput = new JPasswordField(profile[1]);
         JTextField phoneInput = new JTextField(profile[3]);
+        JTextField ageInput = new JTextField(profile[4]);
+        JTextField nameInput = new JTextField(profile[5]);
+        JTextField emailInput = new JTextField(profile[6]);
+        JTextField addressInput = new JTextField(profile[7]);
 
         formPanel.add(new JLabel("Username:"));
-        formPanel.add(usernameDisplay);
-        formPanel.add(new JLabel("Role:"));
-        formPanel.add(roleDisplay);
-        formPanel.add(new JLabel("New Password:"));
+        formPanel.add(usernameInput);
+
+        formPanel.add(new JLabel("Password:"));
         formPanel.add(passwordInput);
+
+        formPanel.add(new JLabel("Role (immutable):"));
+        formPanel.add(roleDisplay);
+
         formPanel.add(new JLabel("Phone Number:"));
         formPanel.add(phoneInput);
+
+        formPanel.add(new JLabel("Age:"));
+        formPanel.add(ageInput);
+
+        formPanel.add(new JLabel("Full Name:"));
+        formPanel.add(nameInput);
+
+        formPanel.add(new JLabel("Email Address:"));
+        formPanel.add(emailInput);
+
+        formPanel.add(new JLabel("Home Address:"));
+        formPanel.add(addressInput);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 12));
         JButton saveBtn = new JButton("Save Changes");
         JButton cancelBtn = new JButton("Cancel");
 
         saveBtn.addActionListener(e -> {
+            String newUName = usernameInput.getText().trim();
             String newPass = new String(passwordInput.getPassword()).trim();
             String newPhone = phoneInput.getText().trim();
+            String newAge = ageInput.getText().trim();
+            String newFullName = nameInput.getText().trim();
+            String newEmail = emailInput.getText().trim();
+            String newAddr = addressInput.getText().trim();
 
-            if (newPass.isEmpty() || newPhone.isEmpty()) {
-                JOptionPane.showMessageDialog(dialog, "Fields cannot be blank.", "Warning", JOptionPane.WARNING_MESSAGE);
+            // 1. Check for blank fields
+            if (newUName.isEmpty() || newPass.isEmpty() || newPhone.isEmpty() || 
+                newAge.isEmpty() || newFullName.isEmpty() || newEmail.isEmpty() || newAddr.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "All profile fields are required.", "Validation Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
+            // 2. Prevent pipe character collisions
+            if (newUName.contains("|") || newPass.contains("|") || newPhone.contains("|") ||
+                newAge.contains("|") || newFullName.contains("|") || newEmail.contains("|") || newAddr.contains("|")) {
+                JOptionPane.showMessageDialog(dialog, "Input must not contain the pipe character ('|').", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 3. Username unique check (if changing username)
+            if (TechnicianFunctions.isUsernameTaken(newUName, technicianName)) {
+                JOptionPane.showMessageDialog(dialog, "Username '" + newUName + "' is already taken.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 4. Phone number format check
             if (!newPhone.matches("\\d{10,11}")) {
                 JOptionPane.showMessageDialog(dialog, "Phone number must be 10 or 11 digits (e.g., 0123456789).", "Invalid Input", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            boolean updated = TechnicianFunctions.updateProfile(technicianName, newPass, newPhone);
+            // 5. Age format check
+            if (!newAge.matches("\\d{1,3}") || Integer.parseInt(newAge) < 16 || Integer.parseInt(newAge) > 99) {
+                JOptionPane.showMessageDialog(dialog, "Please enter a valid age between 16 and 99.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 6. Email format check
+            if (!newEmail.contains("@") || !newEmail.contains(".")) {
+                JOptionPane.showMessageDialog(dialog, "Please provide a valid email address.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Save to users.txt
+            boolean updated = TechnicianFunctions.updateFullProfile(
+                    technicianName, newUName, newPass, newPhone, newAge, newFullName, newEmail, newAddr
+            );
+
             if (updated) {
                 JOptionPane.showMessageDialog(dialog, "Profile updated successfully!");
+
+                // If technician changed username, update current session and reload
+                if (!technicianName.equalsIgnoreCase(newUName)) {
+                    technicianName = newUName;
+                    welcomeLabel.setText("Welcome back, Technician " + technicianName);
+                    loadAppointments();
+                }
+
                 dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(dialog, "Failed to write updates to users.txt", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dialog, "Failed to write updates to users.txt", "File Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 

@@ -3,6 +3,7 @@ lim|lim|Counter|0123456789|35|Lim Jing Heng|lim.jh@apu.edu.my|12 Jalan Sungai Wa
 jeff|hehe|Manager|0129003489|42|Jeffrey Einstein|jeff.tan@apu.edu.my|88 Jalan Ampang Hilir, 55000 Kuala Lumpur
 mike|mm|Customer|0123331234|22|Mike Kok|mike.kok@student.apu.edu.my|45 Jalan Teknologi, 63000 Cyberjaya
 testing|ab|Customer|0123456789|30|Tests Ling|testing.ling@student.apu.edu.my|7 Jalan Perdana, 43300 Seri Kembangan
+sean|haha|Technician|0123456789|25|Sean Johnson Anson|sja.sk@apu.edu.my|12 Jalan Sungai Wangi, 57000 Kuala Lumpur
 alex|alex|Technician|0123456789|31|Alex Phang|alex.phang@apu.edu.my|56 Jalan Bukit Bintang, 55100 Kuala Lumpur
 muthu|muthu|Technician|0174856473|38|Muthu Krishnan|muthu.krishnan@apu.edu.my|9 Jalan Kampung, 47600 Subang Jaya
 bill|bill|Manager|0182495728|57|Bill Ding|bd@hotsmail.com|29, Jalan Rumah 99, Taman Pembinaan

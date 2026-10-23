@@ -18,6 +18,8 @@ public class ManagerFrame extends javax.swing.JFrame {
     public ManagerFrame() {
         initComponents();
         jButton2.addActionListener(this::jButton2ActionPerformed);
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+        jButton4.addActionListener(this::jButton4ActionPerformed);
     }
 
     /**
@@ -90,6 +92,16 @@ public class ManagerFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         new SetPricesFrame().setVisible(true);
+        this.dispose();
+    }
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+        new FeedbackFrame().setVisible(true);
+        this.dispose();
+    }
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
+        new ReportsFrame().setVisible(true);
         this.dispose();
     }
 

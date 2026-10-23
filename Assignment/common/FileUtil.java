@@ -120,7 +120,7 @@ public class FileUtil {
 
     public static void loadPrices() {
         allPrices.clear();
-        List<String> lines = read("prices.txt");
+        List<String> lines = read("price.txt");
         for (int i = 1; i < lines.size(); i++) {
             String[] parts = lines.get(i).split("\\|");
             if (parts.length >= 2) {
@@ -139,7 +139,7 @@ public class FileUtil {
         for (ServicePrice servicePrice : allPrices) {
             lines.add(servicePrice.getServiceType() + "|" + servicePrice.getPrice());
         }
-        write("prices.txt", lines);
+        write("price.txt", lines);
     }
 
     public static ServicePrice findPriceByServiceType(String serviceType) {

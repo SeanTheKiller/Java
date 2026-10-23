@@ -6,6 +6,7 @@ package counter;
 
 import common.FileUtil;
 import common.User;
+import common.EditProfileDialog;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
@@ -62,13 +63,45 @@ public class CustomerListPanel extends javax.swing.JPanel {
             row.add(new JLabel(u.getUsername()));
             row.add(new JLabel(u.getRole()));
             row.add(new JLabel(u.getPhoneNumber() != null ? u.getPhoneNumber() : ""));
-            row.add(new JButton("Edit"));
-            row.add(new JButton("Delete"));
+
+            JButton editButton = new JButton("Edit");
+            editButton.addActionListener(e -> openEditDialog(u));
+            JButton deleteButton = new JButton("Delete");
+            deleteButton.addActionListener(e -> deleteCustomer(u));
+            row.add(editButton);
+            row.add(deleteButton);
             itemsPanel.add(row);
         }
 
         itemsPanel.revalidate();
         itemsPanel.repaint();
+    }
+
+    private void openEditDialog(User user) {
+        // modal dialog blocks here until closed
+        new EditProfileDialog(
+                (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), user
+        ).setVisible(true);
+        generateRows();
+    }
+
+    private void deleteCustomer(User user) {
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                "Delete customer '" + user.getUsername() + "'?",
+                "Confirm delete", javax.swing.JOptionPane.YES_NO_OPTION);
+        if (confirm != javax.swing.JOptionPane.YES_OPTION) {
+            return;
+        }
+        FileUtil.loadAllUsers();
+        User found = FileUtil.findUserByUsername(user.getUsername());
+        if (found == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "User not found.",
+                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        FileUtil.allUsers.remove(found);
+        FileUtil.saveAllUsers();
+        generateRows();
     }
 
     /**

@@ -55,7 +55,12 @@ public class FileUtil {
             String line = lines.get(i);
             String[] parts = line.split("\\|");
             if (parts.length >= 4) {
-                new User(parts[0], parts[1], parts[2], parts[3]);
+                if (parts[2].trim().equalsIgnoreCase("Customer")) {
+                    new customer.Customer(parts[0], parts[1], parts[3]);
+                    
+                } else {
+                    new User(parts[0], parts[1], parts[2], parts[3]);
+                }
             }
         }
     }
@@ -110,7 +115,11 @@ public class FileUtil {
             String[] parts = line.split("\\|");
             if (parts.length >= 3) {
                 try {
-                    allPayment.add(new Payment(parts[0], parts[1], parts[2]));
+                    if (parts.length >= 5) {
+                        allPayment.add(new Payment(parts[0], parts[1], parts[2], parts[3], parts[4]));
+                    } else {
+                        allPayment.add(new Payment(parts[0], parts[1], parts[2]));
+                    }
                 } catch (IllegalArgumentException ex) {
                     System.out.println("Skipping invalid payment record: " + lines.get(i));
                 }
@@ -129,9 +138,10 @@ public class FileUtil {
     
     public static void saveAllPayments() {
         List<String> lines = new ArrayList<>();
-        lines.add("appointmentId|billedAmount|paidAmount");
+        lines.add("appointmentId|billedAmount|paidAmount|counterStaff|paymentMethod");
         for (Payment p : allPayment) {
-            lines.add(p.getAppointmentID() + "|" + p.getBilledAmount() + "|" + p.getPaidAmount());
+            lines.add(p.getAppointmentID() + "|" + p.getBilledAmount() + "|" + p.getPaidAmount()
+                    + "|" + p.getCounterStaff() + "|" + p.getPaymentMethod());
         }
         write("payments.txt", lines);
     }
@@ -186,24 +196,24 @@ public class FileUtil {
     }
     public static void printAllPayment() {
         for (Payment p : allPayment){
-            System.out.println("Payment info are: "+p.getAppointmentID()+" "+p.getBilledAmount()+" "+p.getPaidAmount());
+            System.out.println("Payment info are: "+p.getAppointmentID()+" "+p.getBilledAmount()+" "+p.getPaidAmount()+" counterStaff="+p.getCounterStaff()+" method="+p.getPaymentMethod());
         }
     }
     
     public static void main(String[] args){
         // testing purposes
-//        loadAllUsers();
-//        printAllUsers();
-//        saveAllUsers();
-//        User a = findUserByUsername("lim ");
-//        if (a != null){
-//            System.out.println("Found user: "+a.username + " "+a.role);
-//        } else {
-//            System.out.println("cannot find user");
-//        }
-          loadAllPayments();
-          printAllPayment();
-          saveAllPayments();
+        loadAllUsers();
+        printAllUsers();
+        saveAllUsers();
+        User a = findUserByUsername("lim ");
+        if (a != null){
+            System.out.println("Found user: "+a.username + " "+a.role);
+        } else {
+            System.out.println("cannot find user");
+        }
+//          loadAllPayments();
+//          printAllPayment();
+//          saveAllPayments();
     }
     
 }

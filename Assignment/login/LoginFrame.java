@@ -116,7 +116,12 @@ public class LoginFrame extends JFrame {
                 this.dispose();
 
             } else if (r.equals("COUNTER") || r.equals("STAFF")) {
-                new CounterFrame().setVisible(true);
+                //Dont fucking touch my fleutil load user again
+                FileUtil.loadAllUsers();
+                FileUtil.currentUser = FileUtil.findUserByUsername(username);
+                CounterFrame a = new CounterFrame();
+                a.setLocationRelativeTo(this);
+                a.setVisible(true);
                 this.dispose();
 
             } else if (r.equals("TECHNICIAN")) {

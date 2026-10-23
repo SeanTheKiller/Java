@@ -32,7 +32,7 @@ public class CustomerFrame extends JFrame {
 
     // Tables (each needs a "model" that holds its rows)
     private DefaultTableModel historyModel = makeModel("Appointment ID", "Car Plate", "Service", "Date & Time", "Technician", "Status");
-    private DefaultTableModel paymentModel = makeModel("Payment ID", "Appointment ID", "Amount (RM)", "Date", "Method", "Collected By");
+    private DefaultTableModel paymentModel = makeModel("Appointment ID", "Amount (RM)", "Date", "Method", "Collected By");
     private DefaultTableModel feedbackModel = makeModel("Appointment ID", "Service", "Technician", "Status", "Your Issue", "Technician Feedback");
     private DefaultTableModel commentModel = makeModel("Comment ID", "Appointment ID", "About", "Staff", "Comment", "Date");
     private JLabel totalPaidLabel = new JLabel();
@@ -169,8 +169,8 @@ public class CustomerFrame extends JFrame {
         // Payments
         paymentModel.setRowCount(0);
         for (Payment p : functions.getPaymentHistory()) {
-            paymentModel.addRow(new Object[]{p.getPaymentId(), p.getAppointmentId(),
-                    String.format("%.2f", p.getAmount()), p.getPaymentDate(), p.getMethod(), p.getCounterStaff()});
+            paymentModel.addRow(new Object[]{p.getAppointmentId(),
+                    String.format("%.2f", p.getPaidAmount()), p.getPaymentDate(), p.getMethod(), p.getCounterStaff()});
         }
         totalPaidLabel.setText(String.format("  Total paid: RM %.2f", functions.getTotalPaid()));
 

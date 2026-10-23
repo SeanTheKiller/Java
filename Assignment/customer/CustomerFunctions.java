@@ -130,7 +130,7 @@ public class CustomerFunctions implements CustomerOperations {
     public double getTotalPaid() {
         double total = 0;
         for (Payment p : getPaymentHistory()) {
-            total += p.getAmount();
+            total += p.getPaidAmount();
         }
         return total;
     }

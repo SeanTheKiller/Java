@@ -79,6 +79,9 @@ public class FileUtil {
             if (parts.length >= 9) {
                 allAppointments.add(new Appointment(parts[0], parts[1], parts[2], parts[3],
                         parts[4], parts[5], parts[6], parts[7], parts[8]));
+            } else if (parts.length >= 8) {
+                allAppointments.add(new Appointment(parts[0], parts[1], parts[2], parts[3],
+                        "", parts[4], parts[5], parts[6], parts[7]));
             }
         }
         return allAppointments;

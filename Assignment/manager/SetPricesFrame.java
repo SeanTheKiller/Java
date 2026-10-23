@@ -3,6 +3,7 @@ package manager;
 import common.FileUtil;
 import common.ServicePrice;
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,7 +17,15 @@ public class SetPricesFrame extends javax.swing.JFrame {
     public SetPricesFrame() {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Set Prices");
-        add(pricesPanel);
+        add(pricesPanel, BorderLayout.CENTER);
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(e -> {
+            new ManagerFrame().setVisible(true);
+            dispose();
+        });
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(backButton);
+        add(bottomPanel, BorderLayout.SOUTH);
         setSize(400, 250);
         setLocationRelativeTo(null);
         loadPriceRows();

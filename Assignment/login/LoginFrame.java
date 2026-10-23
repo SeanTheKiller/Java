@@ -117,6 +117,8 @@ public class LoginFrame extends JFrame {
 
         if (r.equals("MANAGER")) {
             JOptionPane.showMessageDialog(null, "Opening Manager Dashboard...");
+            FileUtil.loadAllUsers();
+            FileUtil.currentUser = FileUtil.findUserByUsername(username);
             new manager.ManagerFrame().setVisible(true);
 
         } else if (r.equals("COUNTER") || r.equals("STAFF")) {

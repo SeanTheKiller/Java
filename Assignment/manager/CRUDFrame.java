@@ -49,6 +49,12 @@ public class CRUDFrame extends javax.swing.JFrame {
         });
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(createButton);
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(e -> {
+            new ManagerFrame().setVisible(true);
+            dispose();
+        });
+        bottomPanel.add(backButton);
         add(bottomPanel, BorderLayout.SOUTH);
 
         FileUtil.loadAllUsers();

@@ -4,6 +4,8 @@
  */
 package manager;
 
+import common.FileUtil;
+import login.LoginFrame;
 /**
  *
  * @author jerem
@@ -20,6 +22,12 @@ public class ManagerFrame extends javax.swing.JFrame {
         jButton2.addActionListener(this::jButton2ActionPerformed);
         jButton3.addActionListener(this::jButton3ActionPerformed);
         jButton4.addActionListener(this::jButton4ActionPerformed);
+        setLocationRelativeTo(null);
+        String username = FileUtil.currentUser == null
+                ? "Manager" : FileUtil.currentUser.getUsername();
+        jLabel1.setText("Welcome, " + username + " (Manager)");
+        jButton5.setBackground(java.awt.Color.RED);
+        jButton5.setForeground(java.awt.Color.WHITE);
     }
 
     /**
@@ -35,6 +43,7 @@ public class ManagerFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,6 +56,9 @@ public class ManagerFrame extends javax.swing.JFrame {
         jButton3.setText("View Feedback");
 
         jButton4.setText("Reports");
+
+        jButton5.setText("Logout");
+        jButton5.addActionListener(this::jButton5ActionPerformed);
 
         jLabel1.setText("Manager");
 
@@ -61,7 +73,8 @@ public class ManagerFrame extends javax.swing.JFrame {
                         .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel1))
                 .addContainerGap(200, Short.MAX_VALUE))
         );
@@ -78,6 +91,8 @@ public class ManagerFrame extends javax.swing.JFrame {
                 .addComponent(jButton3)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
                 .addContainerGap(68, Short.MAX_VALUE))
         );
 
@@ -103,6 +118,12 @@ public class ManagerFrame extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         new ReportsFrame().setVisible(true);
         this.dispose();
+    }
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
+        FileUtil.currentUser = null;
+        dispose();
+        new LoginFrame().setVisible(true);
     }
 
     /**
@@ -135,6 +156,7 @@ public class ManagerFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

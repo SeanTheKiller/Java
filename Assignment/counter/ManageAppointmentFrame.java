@@ -5,6 +5,8 @@
 package counter;
 import common.Appointment;
 import common.FileUtil;
+import common.Payment;
+import common.ServicePrice;
 /**
  *
  * @author johnc
@@ -118,9 +120,24 @@ public class ManageAppointmentFrame extends javax.swing.JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
         if (dialog.createdAppointment != null) {
-            FileUtil.allAppointments.add(dialog.createdAppointment);
+            Appointment apt = dialog.createdAppointment;
+            FileUtil.allAppointments.add(apt);
             FileUtil.saveAllAppointments();
             FileUtil.loadAllAppointments();
+
+            // bill the customer as soon as the appointment is made, using the manager-set price
+            FileUtil.loadAllPayments();
+            FileUtil.loadPrices();
+            ServicePrice servicePrice = FileUtil.findPriceByServiceType(apt.getServiceType());
+            if (servicePrice != null) {
+                Payment payment = new Payment(apt.getAppointmentId());
+                payment.setBilledAmount(servicePrice.getPrice());
+                FileUtil.allPayment.add(payment);
+                FileUtil.saveAllPayments();
+            } else {
+                logger.warning("Cannot create payment: no price set for service type '" + apt.getServiceType() + "'");
+            }
+
             renderAllAppointments();
             fitTableColumns();
         }

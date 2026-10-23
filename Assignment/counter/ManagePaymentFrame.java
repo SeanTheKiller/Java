@@ -206,7 +206,7 @@ public class ManagePaymentFrame extends javax.swing.JFrame {
         lines.add("Payment Method : " + (pmt != null && !pmt.getPaymentMethod().isEmpty() ? pmt.getPaymentMethod() : "-"));
         lines.add("===============================================");
         lines.add("Thank you for choosing our service!");
-        FileUtil.write("Receipt-" + appointmentId + ".txt", lines);
+        FileUtil.write("receipt/receipt-" + appointmentId + ".txt", lines);
 
         JTextArea textArea = new JTextArea(String.join("\n", lines));
         textArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 14));

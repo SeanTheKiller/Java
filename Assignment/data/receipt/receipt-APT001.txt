@@ -1,0 +1,19 @@
+=============== SERVICE RECEIPT ===============
+Receipt No : R-APT001
+Generated  : 2026-10-23 18:25:23
+-----------------------------------------------
+Appointment ID : APT001
+Customer Name  : mike
+Car Plate      : WVG1234
+Service Type   : Normal Service
+Datetime       : 2026-10-21T10:00
+Technician     : sean
+Service Status : Completed
+-----------------------------------------------
+Billed Amount  : RM 20.00
+Paid Amount    : RM 20.00
+Status         : FULLY PAID
+Counter Staff  : lim
+Payment Method : Cash
+===============================================
+Thank you for choosing our service!

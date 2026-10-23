@@ -6,6 +6,7 @@ package counter;
 
 import common.Appointment;
 import common.FileUtil;
+import common.ServicePrice;
 import common.User;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -177,12 +178,20 @@ public class CreateAppointment extends javax.swing.JDialog {
         String technician = jTextField4.getText().trim();
         String comment = jTextArea1.getText().trim();
 
+        FileUtil.loadPrices();
+        ServicePrice servicePrice = FileUtil.findPriceByServiceType(serviceType);
+        if (servicePrice == null) {
+            errors.add("No price is set in price.txt for service type '" + serviceType + "'. Ask the manager to set the price first.");
+        }
+
         if (customerName.isEmpty()) {
             errors.add("Customer name is required.");
         } else if (customerName.length() > 60) {
             errors.add("Customer name must be 60 characters or fewer.");
         } else if (customerName.contains("|")) {
             errors.add("Customer name cannot contain the '|' character.");
+        } else if (!customerExists(customerName)) {
+            errors.add("Customer '" + customerName + "' is not a valid customer username in users.txt.");
         }
 
         if (!carPlate.matches("[A-Z0-9]{2,10}")) {
@@ -242,6 +251,16 @@ public class CreateAppointment extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(this, "Appointment " + apt.getAppointmentId() + " created.", "Success", JOptionPane.INFORMATION_MESSAGE);
         this.dispose();
     }//GEN-LAST:event_CreateButtonActionPerformed
+
+    private boolean customerExists(String customerName) {
+        FileUtil.loadAllUsers();
+        for (User u : FileUtil.allUsers) {
+            if (u.getUsername().equalsIgnoreCase(customerName)) {
+                return u.getRole().equalsIgnoreCase("Customer");
+            }
+        }
+        return false;
+    }
 
     private boolean technicianExists(String technician) {
         FileUtil.loadAllUsers();
